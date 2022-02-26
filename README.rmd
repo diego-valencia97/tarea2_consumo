@@ -1,0 +1,50 @@
+---
+title: "Macroeconomía II: Tarea 2"
+subtitle: "Consumo"
+author: equipo 5
+date: \today
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    tables: true
+    urlcolor: blue
+header-includes:
+ #  - \usepackage[nottoc]{tocbibind}
+   - \usepackage[spanish,es-tabla]{babel} # Cargamos es-tabla para Tabla en lugar de Cuadro
+   - \usepackage[utf8]{inputenc} # Codificación de entrada
+   - \usepackage[T1]{fontenc} # Codificación de fuente
+   - \usepackage{lmodern} # Fuente compatible
+   - \usepackage{graphicx}
+   - \usepackage{float}
+   - \usepackage{booktabs}
+   - \usepackage{longtable}
+   - \renewcommand{\listfigurename}{Lista de figuras}
+   - \renewcommand{\listtablename}{Lista de tablas}
+   - \renewcommand{\spanishfigurename}{Figura}
+   - \renewcommand{\spanishtablename}{Tabla}
+
+---
+# *Resuelva los ejercicios 8.1, 8.2, 8.4, 8.5 y 8.6,  (Romer, 5a Ed). Realice estos con ayuda de su laboratorista y entregue las soluciones a máquina, utilizando LaTeX.*
+
+## *poner enunciado de Romer*
+
+# *Ejercicio 2*
+
+# *Ejercicio 3*
+
+# *Estudie el consumo de los individuos en México, siguiendo estos pasos:* debemos usar 2012
+
+## *Baje los datos de un año de la ENIGH del sitio del INEGI y establezca el número de hogares y el ingreso y el gasto promedio.*
+
+## *Estime una relación entre ingreso y gasto y reporte sus resultados.*
+
+## *Estime una relación entre ingreso y gasto pero para hogares unipersonales de edad entre 30 y 40 años de edad de la Ciudad de México.*
+
+## *Para todos los hogares unipersonales, estime el valor promedio del ingreso por edad, separando la muestra en grupos de edad de cinco años cada uno y grafíquelo.*
+
+## *Interprete sus resultados a la luz de la HIP y comparados con los resultados para las variables agregadas.*
+
+# *Ejercicio 5*
+
+# *Ejercicio 6*
+

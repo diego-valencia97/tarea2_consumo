@@ -30,6 +30,53 @@ header-includes:
 
 # *Ejercicio 2*
 
+2. Cree un vector de 20 ingresos permanentes aleatorios $Y_i^P$, distribuidos normalmente, con media 10 y varianza $\sigma^P$. Cree 20 vectores (cada uno de estos vectores representa una persona) cada uno con 100 observaciones idénticas del ingreso permanente. Grafíquelos (eje x, persona; eje y, ingreso permanente)
+
+
+*(a) Cree un vector de 20 ingresos permanentes aleatorios $Y_i^P$, distribuidos normalmente, con media 10 y varianza $\sigma^P$. Cree 20 vectores (cada uno de estos vectores representa una persona) cada uno con 100 observaciones idénticas del ingreso permanente. Grafíquelos (eje x, persona; eje y, ingreso permanente).*
+
+``` {inciso 2a}
+
+
+```
+*(b)  Cree 20 vectores de 100 ingresos transitorios aleatorios $Y_{i,t}^T$, distribuidos normalmente, con media 0 y con varianza $\sigma^T$. Grafíquelos.*
+``` {inciso 2b}
+
+
+```
+*(c) Cree 20 vectores de 100 ingresos totales $Y_{i,t}$, sumando el ingreso transitorio y el permanente. Grafíquelos.*
+``` {inciso 2c}
+
+
+```
+*(d) Cree 20 vectores de 100 errores de medición $\epsilon_{i,t}$, distribuidos normalmente, con media 0 y varianza $\sigma^\epsilon>0$. Grafíquelos.*
+``` {inciso 2d}
+
+
+```
+*(e) Cree  20 vectores de 100 consumos $C_{i,t}$ cada uno, de acuerdo a la siguiente regla $C_{i,t}=Y_i^P+0.1Y_{i,t}^T+\epsilon_{i,t}$. Grafíquelos.*
+``` {inciso 2e}
+
+
+```
+*(f) Estime la relación lineal entre ingreso total y consumo $C_{i,t}=\alpha+\beta Y_{i,t}+\epsilon_{i,t}$. Describa el resultado de su estimación y grafíque la relación entre las observaciones del consumo y las del ingreso.*
+``` {inciso 2f}
+
+
+```
+*(g) Incremente la varianza del ingreso permanente, y disminuya la varianza del ingreso transitorio y vuelva a estimar y graficar la relación entre el consumo y el ingreso.*
+``` {inciso 2g}
+
+
+```
+*(h) Disminuya la varianza del ingreso permanente, y aumente la varianza del ingreso transitorio y vuelva a estimar y graficar la relación entre el consumo y el ingreso.*
+
+``` {inciso 2h}
+
+
+```
+
+
 # *Ejercicio 3*
 
 # *Estudie el consumo de los individuos en México, siguiendo estos pasos:* debemos usar 2012

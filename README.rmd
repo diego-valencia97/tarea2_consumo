@@ -24,6 +24,20 @@ header-includes:
    - \renewcommand{\spanishtablename}{Tabla}
 
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+```
+
+
+```{r carga de librerías}
+  pacman::p_load(tidyverse, readr, foreign, msm, lubridate,zoo, janitor, kableExtra, ggplot2, knitr, hexbin, magrittr, readxl, dplyr, broom, tinytext)
+
+```
+
+
+
+
 # *Resuelva los ejercicios 8.1, 8.2, 8.4, 8.5 y 8.6,  (Romer, 5a Ed). Realice estos con ayuda de su laboratorista y entregue las soluciones a máquina, utilizando LaTeX.*
 
 ## *poner enunciado de Romer*
@@ -34,43 +48,43 @@ header-includes:
 
 ## *(a) Cree un vector de 20 ingresos permanentes aleatorios $Y_i^P$, distribuidos normalmente, con media 10 y varianza $\sigma^P$. Cree 20 vectores (cada uno de estos vectores representa una persona) cada uno con 100 observaciones idénticas del ingreso permanente. Grafíquelos (eje x, persona; eje y, ingreso permanente).*
 
-``` {inciso 2a}
+``` {r inciso 2a}
 
 
 ```
 ## *(b)  Cree 20 vectores de 100 ingresos transitorios aleatorios $Y_{i,t}^T$, distribuidos normalmente, con media 0 y con varianza $\sigma^T$. Grafíquelos.*
-``` {inciso 2b}
+``` {r inciso 2b}
 
 
 ```
 ## *(c) Cree 20 vectores de 100 ingresos totales $Y_{i,t}$, sumando el ingreso transitorio y el permanente. Grafíquelos.*
-``` {inciso 2c}
+``` {r inciso 2c}
 
 
 ```
 ## *(d) Cree 20 vectores de 100 errores de medición $\epsilon_{i,t}$, distribuidos normalmente, con media 0 y varianza $\sigma^\epsilon>0$. Grafíquelos.*
-``` {inciso 2d}
+``` {r inciso 2d}
 
 
 ```
 ## *(e) Cree  20 vectores de 100 consumos $C_{i,t}$ cada uno, de acuerdo a la siguiente regla $C_{i,t}=Y_i^P+0.1Y_{i,t}^T+\epsilon_{i,t}$. Grafíquelos.*
-``` {inciso 2e}
+``` {r inciso 2e}
 
 
 ```
 ## *(f) Estime la relación lineal entre ingreso total y consumo $C_{i,t}=\alpha+\beta Y_{i,t}+\epsilon_{i,t}$. Describa el resultado de su estimación y grafíque la relación entre las observaciones del consumo y las del ingreso.*
-``` {inciso 2f}
+``` {r inciso 2f}
 
 
 ```
 ## *(g) Incremente la varianza del ingreso permanente, y disminuya la varianza del ingreso transitorio y vuelva a estimar y graficar la relación entre el consumo y el ingreso.*
-``` {inciso 2g}
+``` {r inciso 2g}
 
 
 ```
 ## *(h) Disminuya la varianza del ingreso permanente, y aumente la varianza del ingreso transitorio y vuelva a estimar y graficar la relación entre el consumo y el ingreso.*
 
-``` {inciso 2h}
+``` {r inciso 2h}
 
 
 ```
@@ -82,11 +96,136 @@ header-includes:
 
 ## *Baje los datos de un año de la ENIGH del sitio del INEGI y establezca el número de hogares y el ingreso y el gasto promedio.*
 
+
+```{r header enigh, warning=FALSE}
+
+hog <- read_csv("~/Documents/GitHub/tarea2_consumo/NCV_concentrado_2012_concil_2010.csv")
+
+hog1 <- hog %>% select(folioviv, foliohog,ubica_geo, clase_hog, edad_jefe, ing_cor, gasto_mon, factor_hog) %>% 
+  rename( "Folio Vivienda" = folioviv,
+         "Folio Hogar"= foliohog, 
+         "Ubicación" = ubica_geo, 
+         " Edad Jefe" = edad_jefe , 
+         "Gasto" = gasto_mon,
+         "Ingreso" = ing_cor,
+         "Factor"= factor_hog)
+
+kable(head(hog1), booktabs = T, format = "latex", caption = "ENIGH 2012") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+
+```
+
+```{r}
+
+```
+
+
+
 ## *Estime una relación entre ingreso y gasto y reporte sus resultados.*
+
+Para estimar la relación gasto-ingreso asumimos un modelo lineal que sigue lo siguiente:
+
+\begin{equation*}
+Gasto =\beta_{0} + \beta_{1}*Ing+U
+\end{equation*}
+
+
+Donde $\beta_{0}$ se refiere a la intersección de la regresión, $\beta_{1}$ al coeficiente de la variable ingreso y $U$ es el error. Los resultados se muestran a continuación
+
+```{r regresión}
+lm(data = hog, gasto_mon ~ ing_cor, weights = factor_hog) %>% tidy() %>% 
+  kable(booktabs = T, format = "latex", caption = "Relación Gasto-Ingreso") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+                                                                
+
+```
+
+Podemos destacar un coeficiente positivo, es decir una relación directa entre el gasto y el ingreso. Además un aumento 
+
+
+```{r grafica gasto-ingreso}
+#hog %>% ggplot(aes(ing_cor, gasto_mon), weight) +
+#  geom_point() +
+ # geom_smooth(method='lm', weight= factor_hog) 
+
+```
+
+
 
 ## *Estime una relación entre ingreso y gasto pero para hogares unipersonales de edad entre 30 y 40 años de edad de la Ciudad de México.*
 
+Para estimar la relación primero se realiza un filtrado de la base de datos con los criterios requeridos. El resultado de dicho filtrado nos deja con 6 observaciones, se muestra 
+
+```{r }
+hog$ubi <- substr(hog$ubica_geo,1,2)
+hog2 <-hog %>% filter( edad_jefe >= 30 & edad_jefe <=40, clase_hog == 1, ubi == "09") %>% select( folioviv, gasto_mon, ing_cor, factor_hog)
+
+kable(hog2,booktabs = T, format = "latex", caption = "Relación Gasto-Ingreso para hogares unipersonales de edad entre 30 y 40 años de edad") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+```
+
+
+
+```{r }
+lm( data= hog2, gasto_mon ~ ing_cor)
+kable(booktabs = T, format = "latex", caption = "Hogares unipersonales de entre 30 y 40 años de la Ciudad de México") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+
+```
+
+
+
 ## *Para todos los hogares unipersonales, estime el valor promedio del ingreso por edad, separando la muestra en grupos de edad de cinco años cada uno y grafíquelo.*
+
+```{r}
+hog %>% filter(clase_hog == 1) %>% 
+  mutate(edad = case_when(edad_jefe >= 12 & edad_jefe <=15  ~ '15',
+                          edad_jefe > 15 & edad_jefe <= 20 ~ '20',
+                          edad_jefe > 20 & edad_jefe <= 25 ~ '25',
+                           edad_jefe > 25 & edad_jefe <= 30 ~ '30',
+                           edad_jefe > 30 & edad_jefe <= 35 ~ '35',
+                           edad_jefe > 35 & edad_jefe <= 40 ~ '40',
+                           edad_jefe > 40 & edad_jefe <= 45 ~ '45',
+                           edad_jefe > 45 & edad_jefe <= 50 ~ '50',
+                           edad_jefe > 50 & edad_jefe <= 55 ~ '55',
+                           edad_jefe > 55 & edad_jefe <= 60 ~ '60',
+                           edad_jefe > 60 & edad_jefe <= 65 ~ '65',
+                           edad_jefe > 65 & edad_jefe <= 70 ~ '70',
+                           edad_jefe > 70 & edad_jefe <= 75 ~ '75',
+                           edad_jefe > 75 & edad_jefe <= 80 ~ '80',
+                           edad_jefe > 80 & edad_jefe <= 85 ~ '85',
+                           edad_jefe > 85 & edad_jefe <= 90 ~ '90',
+                           edad_jefe > 90 & edad_jefe <= 95 ~ '95',
+                           )) %>% 
+  group_by(edad) %>% 
+  summarise(promedio = weighted.mean(ing_cor, w=factor_hog)) %>% 
+  ggplot(aes(x=edad, y=promedio))+geom_bar(stat = "identity", fill = "#FF6666") + labs(title = "", x="edad",y='Promedio del ingreso')
+
+```
+
+
+```{r}
+hog %>% filter(clase_hog == 1) %>% 
+  mutate(edad = case_when(edad_jefe >= 12 & edad_jefe <=15  ~ '12-15',
+                          edad_jefe > 15 & edad_jefe <= 20 ~ '15-20',
+                          edad_jefe > 20 & edad_jefe <= 25 ~ '20-25',
+                           edad_jefe > 25 & edad_jefe <= 30 ~ '25-30',
+                           edad_jefe > 30 & edad_jefe <= 35 ~ '30-35',
+                           edad_jefe > 35 & edad_jefe <= 40 ~ '35-40',
+                           edad_jefe > 40 & edad_jefe <= 45 ~ '40-45',
+                           edad_jefe > 45 & edad_jefe <= 50 ~ '45-50',
+                           edad_jefe > 50 & edad_jefe <= 55 ~ '50-55',
+                           edad_jefe > 55 & edad_jefe <= 60 ~ '55-60',
+                           edad_jefe > 60 & edad_jefe <= 65 ~ '60-65',
+                           edad_jefe > 65 & edad_jefe <= 70 ~ '65-70',
+                           edad_jefe > 70 & edad_jefe <= 75 ~ '70-75',
+                           edad_jefe > 75 & edad_jefe <= 80 ~ '75-80',
+                           edad_jefe > 80 & edad_jefe <= 85 ~ '80-85',
+                           edad_jefe > 85 & edad_jefe <= 90 ~ '85-90',
+                           edad_jefe > 90 & edad_jefe <= 95 ~ '90-95',
+                           edad_jefe > 95 & edad_jefe <= 100 ~ '95-100'
+                           )) %>% 
+  group_by(edad) %>% 
+  summarise(promedio = weighted.mean(ing_cor, w=factor_hog)) %>% 
+    kable(booktabs = T, format = "latex", caption = "Relación Gasto-Ingreso para hogares unipersonales de edad entre 30 y 40 años de edad") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+```
+
 
 ## *Interprete sus resultados a la luz de la HIP y comparados con los resultados para las variables agregadas.*
 

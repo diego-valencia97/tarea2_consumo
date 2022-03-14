@@ -3,14 +3,17 @@ title: "Macroeconomía II: Tarea 2"
 subtitle: "Consumo"
 author: equipo 5
 date: \today
-output:
+output: 
   bookdown::pdf_document2:
-    fig_caption: yes
-    tables: true
-    urlcolor: blue
-header-includes:
- #  - \usepackage[nottoc]{tocbibind}
-   - \usepackage[spanish,es-tabla]{babel} # Cargamos es-tabla para Tabla en lugar de Cuadro
+  toc: true
+  toc_depth: 2
+  tables: true
+  fig_caption: yes
+  toc-title: Contenido
+  urlcolor: blue
+  header-includes:
+   - \usepackage[nottoc]{tocbibind}
+   - \usepackage[spanish,es-tabla]{babel} 
    - \usepackage[utf8]{inputenc} # Codificación de entrada
    - \usepackage[T1]{fontenc} # Codificación de fuente
    - \usepackage{lmodern} # Fuente compatible
@@ -26,63 +29,73 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
 
 ```{r carga de librerías}
-  pacman::p_load(tidyverse, readr, foreign, msm, lubridate,zoo, janitor, kableExtra, ggplot2, knitr, hexbin, magrittr, readxl, dplyr, broom, tinytext)
+  pacman::p_load(tidyverse, readr, foreign, msm, lubridate,zoo, janitor, kableExtra, ggplot2, knitr, hexbin, magrittr, readxl, dplyr, broom, tinytext, fOptions, derivmkts)
 
 ```
 
 
 
 
-# *Resuelva los ejercicios 8.1, 8.2, 8.4, 8.5 y 8.6,  (Romer, 5a Ed). Realice estos con ayuda de su laboratorista y entregue las soluciones a máquina, utilizando LaTeX.*
+# Ejercicio 1
+**Resuelva los ejercicios 8.1, 8.2, 8.4, 8.5 y 8.6,  (Romer, 5a Ed). Realice estos con ayuda de su laboratorista y entregue las soluciones a máquina, utilizando LaTeX.**
 
 ## *poner enunciado de Romer*
 
 
-# 2. Cree un vector de 20 ingresos permanentes aleatorios $Y_i^P$, distribuidos normalmente, con media 10 y varianza $\sigma^P$. Cree 20 vectores (cada uno de estos vectores representa una persona) cada uno con 100 observaciones idénticas del ingreso permanente. Grafíquelos (eje x, persona; eje y, ingreso permanente)
+# Ejercicio 2
+*Cree un vector de 20 ingresos permanentes aleatorios $Y_i^P$, distribuidos normalmente, con media 10 y varianza $\sigma^P$. Cree 20 vectores (cada uno de estos vectores representa una persona) cada uno con 100 observaciones idénticas del ingreso permanente. Grafíquelos (eje x, persona; eje y, ingreso permanente)*
 
 
-## *(a) Cree un vector de 20 ingresos permanentes aleatorios $Y_i^P$, distribuidos normalmente, con media 10 y varianza $\sigma^P$. Cree 20 vectores (cada uno de estos vectores representa una persona) cada uno con 100 observaciones idénticas del ingreso permanente. Grafíquelos (eje x, persona; eje y, ingreso permanente).*
+## a) 
+*Cree un vector de 20 ingresos permanentes aleatorios $Y_i^P$, distribuidos normalmente, con media 10 y varianza $\sigma^P$. Cree 20 vectores (cada uno de estos vectores representa una persona) cada uno con 100 observaciones idénticas del ingreso permanente. Grafíquelos (eje x, persona; eje y, ingreso permanente).*
 
 ``` {r inciso 2a}
 
 
 ```
-## *(b)  Cree 20 vectores de 100 ingresos transitorios aleatorios $Y_{i,t}^T$, distribuidos normalmente, con media 0 y con varianza $\sigma^T$. Grafíquelos.*
+## b)
+*Cree 20 vectores de 100 ingresos transitorios aleatorios $Y_{i,t}^T$, distribuidos normalmente, con media 0 y con varianza $\sigma^T$. Grafíquelos.*
 ``` {r inciso 2b}
 
 
 ```
-## *(c) Cree 20 vectores de 100 ingresos totales $Y_{i,t}$, sumando el ingreso transitorio y el permanente. Grafíquelos.*
+## c) 
+*Cree 20 vectores de 100 ingresos totales $Y_{i,t}$, sumando el ingreso transitorio y el permanente. Grafíquelos.*
 ``` {r inciso 2c}
 
 
 ```
-## *(d) Cree 20 vectores de 100 errores de medición $\epsilon_{i,t}$, distribuidos normalmente, con media 0 y varianza $\sigma^\epsilon>0$. Grafíquelos.*
+## d)
+*Cree 20 vectores de 100 errores de medición $\epsilon_{i,t}$, distribuidos normalmente, con media 0 y varianza $\sigma^\epsilon>0$. Grafíquelos.*
 ``` {r inciso 2d}
 
 
 ```
-## *(e) Cree  20 vectores de 100 consumos $C_{i,t}$ cada uno, de acuerdo a la siguiente regla $C_{i,t}=Y_i^P+0.1Y_{i,t}^T+\epsilon_{i,t}$. Grafíquelos.*
+## e)
+*Cree  20 vectores de 100 consumos $C_{i,t}$ cada uno, de acuerdo a la siguiente regla $C_{i,t}=Y_i^P+0.1Y_{i,t}^T+\epsilon_{i,t}$. Grafíquelos.*
 ``` {r inciso 2e}
 
 
 ```
-## *(f) Estime la relación lineal entre ingreso total y consumo $C_{i,t}=\alpha+\beta Y_{i,t}+\epsilon_{i,t}$. Describa el resultado de su estimación y grafíque la relación entre las observaciones del consumo y las del ingreso.*
+## f)
+*Estime la relación lineal entre ingreso total y consumo $C_{i,t}=\alpha+\beta Y_{i,t}+\epsilon_{i,t}$. Describa el resultado de su estimación y grafíque la relación entre las observaciones del consumo y las del ingreso.*
 ``` {r inciso 2f}
 
 
 ```
-## *(g) Incremente la varianza del ingreso permanente, y disminuya la varianza del ingreso transitorio y vuelva a estimar y graficar la relación entre el consumo y el ingreso.*
+## 
+*g) Incremente la varianza del ingreso permanente, y disminuya la varianza del ingreso transitorio y vuelva a estimar y graficar la relación entre el consumo y el ingreso.*
 ``` {r inciso 2g}
 
 
 ```
-## *(h) Disminuya la varianza del ingreso permanente, y aumente la varianza del ingreso transitorio y vuelva a estimar y graficar la relación entre el consumo y el ingreso.*
+## 
+*h) Disminuya la varianza del ingreso permanente, y aumente la varianza del ingreso transitorio y vuelva a estimar y graficar la relación entre el consumo y el ingreso.*
 
 ``` {r inciso 2h}
 
@@ -90,14 +103,31 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 ```
 
 
+#Ejercicio 3
 
+# Ejercicio 4
+**Estudie el consumo de los individuos en México, siguiendo estos pasos:** 
 
-# *Estudie el consumo de los individuos en México, siguiendo estos pasos:* debemos usar 2012
+## a)
+**Baje los datos de un año de la ENIGH del sitio del INEGI y establezca el número de hogares y el ingreso y el gasto promedio.**
 
-## *Baje los datos de un año de la ENIGH del sitio del INEGI y establezca el número de hogares y el ingreso y el gasto promedio.*
+De la página oficial del INEGI se descargó la base "concentrado_hogar" del año 2012. 
+Las variables más relevantes para este ejercicio son las siguientes:
 
+\begin{itemize}
+  \item Folioviv, Idenficador de la vivienda.
+  \item foliohog, número de hogares adicionales a la vivienda.
+  \item ubica\_geo, ubicación geográfica;esta compuesta por la clave de entidad federativa y clave del municipio-
+  \item clase\_hog, diferenciación de los tipos de hogares (por ejemplo, unipersonales = 1)
+  \item edad\_jefe, edad del jefe del hogar a la fecha de la entrevista.
+  \item ing\_cor, ingreso corriente.
+  \item gasto\_mon, gasto monetario-
+  \item factor\_hog, factor de expansión.
+\end{itemize}
 
-```{r header enigh, warning=FALSE}
+En seguida, se muestra el "header" de la base de datos (\ref{tab:head})
+
+```{r head, warning=FALSE}
 
 hog <- read_csv("~/Documents/GitHub/tarea2_consumo/NCV_concentrado_2012_concil_2010.csv")
 
@@ -124,21 +154,23 @@ kable(head(hog1), booktabs = T, format = "latex", caption = "ENIGH 2012") %>% ka
 
 Para estimar la relación gasto-ingreso asumimos un modelo lineal que sigue lo siguiente:
 
-\begin{equation*}
+\begin{equation}
 Gasto =\beta_{0} + \beta_{1}*Ing+U
-\end{equation*}
+\end{equation}
 
 
-Donde $\beta_{0}$ se refiere a la intersección de la regresión, $\beta_{1}$ al coeficiente de la variable ingreso y $U$ es el error. Los resultados se muestran a continuación
+Donde $\beta_{0}$ se refiere a la intersección de la regresión, $\beta_{1}$ al coeficiente de la variable ingreso y $U$ es el error. Los resultados se muestran a continuación (\ref{tab:reg})
 
-```{r regresión}
+```{r reg}
+
+
 lm(data = hog, gasto_mon ~ ing_cor, weights = factor_hog) %>% tidy() %>% 
   kable(booktabs = T, format = "latex", caption = "Relación Gasto-Ingreso") %>% kable_styling(position = "center", latex_options = "HOLD_position")
                                                                 
 
 ```
 
-Podemos destacar un coeficiente positivo, es decir una relación directa entre el gasto y el ingreso. Además un aumento 
+Podemos destacar un coeficiente positivo, es decir una relación directa entre el gasto y el ingreso. Además, según el moedelo, un aumento en un peso de ingreso, genera un aumento de 0.5 pesos.
 
 
 ```{r grafica gasto-ingreso}
@@ -146,26 +178,50 @@ Podemos destacar un coeficiente positivo, es decir una relación directa entre e
 #  geom_point() +
  # geom_smooth(method='lm', weight= factor_hog) 
 
+hog %>% ggplot(aes(x = ing_cor, y= gasto_mon)) + geom_point()+geom_smooth(method = "lm")+ labs(title = "", x="Ingreso corriente",y='Gasto')
+
 ```
 
 
 
 ## *Estime una relación entre ingreso y gasto pero para hogares unipersonales de edad entre 30 y 40 años de edad de la Ciudad de México.*
 
-Para estimar la relación primero se realiza un filtrado de la base de datos con los criterios requeridos. El resultado de dicho filtrado nos deja con 6 observaciones, se muestra 
+Para estimar la relación primero se realiza un filtrado de la base de datos con los criterios requeridos:
+
+\begin{itemize}
+  \item 30 < edad < 40
+  \item clase\_hog == 1 (clave para hogares unipersonales)
+  \item Código de entidad federativa 9. (Esto indica los hogares en CDMX)
+El resultado de dicho filtrado nos deja con 6 observaciones. Es importante mencionar que hay que considerar el factor de ajuste.
+\end{itemize}
 
 ```{r }
-hog$ubi <- substr(hog$ubica_geo,1,2)
-hog2 <-hog %>% filter( edad_jefe >= 30 & edad_jefe <=40, clase_hog == 1, ubi == "09") %>% select( folioviv, gasto_mon, ing_cor, factor_hog)
+hog$ubi <- substr(hog$ubica_geo,1,2) #Separamos el código de la entidad
+hog2 <- hog %>% dplyr::filter( edad_jefe >= 30 & edad_jefe <=40, clase_hog == 1, ubi == "09") %>% select( folioviv, gasto_mon, ing_cor, factor_hog)
 
 kable(hog2,booktabs = T, format = "latex", caption = "Relación Gasto-Ingreso para hogares unipersonales de edad entre 30 y 40 años de edad") %>% kable_styling(position = "center", latex_options = "HOLD_position")
 ```
 
+De nuevo asumimos un modelo lineal como en la ecuación \ref{reg}
 
 
 ```{r }
-lm( data= hog2, gasto_mon ~ ing_cor, weights = factor_hog) %>% tidy()
-kable(booktabs = T, format = "latex", caption = "Hogares unipersonales de entre 30 y 40 años de la Ciudad de México") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+m1 <- lm( data= hog2, gasto_mon ~ ing_cor, weights = factor_hog)
+```
+
+
+```{r }
+lm( data= hog2, gasto_mon ~ ing_cor, weights = factor_hog) %>% broom::tidy() %>% 
+kable( booktabs = T, format = "latex", caption = "Hogares unipersonales de entre 30 y 40 años de la Ciudad de México") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+
+```
+
+De nuevo podemos ver una relación directa entre ingreso y gasto. La relación es estadísticamente significativa y vemos que la intersección de la regresión es sustancialmente más baja. Esto se explica por el rango de edad que tomamos en cuenta. Además la población con las características requeridas, al incrementar su ingreso en un peso, aumenta su gasto en 90 centavos.
+
+```{r graf2}
+
+
+ggplot(hog2,aes(x = ing_cor, y= gasto_mon)) + geom_point()+geom_smooth(method = "lm")+ labs(title = "", x="Ingreso corriente",y='Gasto')
 
 ```
 
@@ -174,7 +230,7 @@ kable(booktabs = T, format = "latex", caption = "Hogares unipersonales de entre 
 ## *Para todos los hogares unipersonales, estime el valor promedio del ingreso por edad, separando la muestra en grupos de edad de cinco años cada uno y grafíquelo.*
 
 ```{r}
-hog %>% filter(clase_hog == 1) %>% 
+hog %>% dplyr::filter(clase_hog == 1) %>% 
   mutate(edad = case_when(edad_jefe >= 12 & edad_jefe <=15  ~ '15',
                           edad_jefe > 15 & edad_jefe <= 20 ~ '20',
                           edad_jefe > 20 & edad_jefe <= 25 ~ '25',
@@ -201,7 +257,7 @@ hog %>% filter(clase_hog == 1) %>%
 
 
 ```{r}
-hog %>% filter(clase_hog == 1) %>% 
+hog %>% dplyr::filter(clase_hog == 1) %>% 
   mutate(edad = case_when(edad_jefe >= 12 & edad_jefe <=15  ~ '12-15',
                           edad_jefe > 15 & edad_jefe <= 20 ~ '15-20',
                           edad_jefe > 20 & edad_jefe <= 25 ~ '20-25',
@@ -223,13 +279,21 @@ hog %>% filter(clase_hog == 1) %>%
                            )) %>% 
   group_by(edad) %>% 
   summarise(promedio = weighted.mean(ing_cor, w=factor_hog)) %>% 
-    kable(booktabs = T, format = "latex", caption = "Relación Gasto-Ingreso para hogares unipersonales de edad entre 30 y 40 años de edad") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+    kable(booktabs = T, format = "latex", caption = "Ingreso promedio por grupo de edad") %>% kable_styling(position = "center", latex_options = "HOLD_position")
 ```
 
 
 ## *Interprete sus resultados a la luz de la HIP y comparados con los resultados para las variables agregadas.*
 
+
+
 # *Ejercicio 5*
 
-# *Ejercicio 6*
+# *Utilice el método del árbol binomial para, primero, explicar el precio P=80 de un activo y, después, valuar un ``call'' sobre dicho activo, con precio de ejercicio K=P-N donde N es el número de su equipo, (Grupo 1, use N=1, Grupo 2, use N=2, etc) asumiendo una tasa de interés de 5 por ciento:*
+
+Denotemos el precio del activo como $S_{0}=80$
+
+
+
+
 

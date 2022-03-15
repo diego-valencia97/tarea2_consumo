@@ -125,7 +125,7 @@ Las variables más relevantes para este ejercicio son las siguientes:
   \item factor\_hog, factor de expansión.
 \end{itemize}
 
-En seguida, se muestra el "header" de la base de datos (\ref{tab:head})
+En seguida, se muestra el "header" de la base de datos (\ref{tab:head})-
 
 ```{r head, warning=FALSE}
 
@@ -192,8 +192,9 @@ Para estimar la relación primero se realiza un filtrado de la base de datos con
   \item 30 < edad < 40
   \item clase\_hog == 1 (clave para hogares unipersonales)
   \item Código de entidad federativa 9. (Esto indica los hogares en CDMX)
+  \end{itemize}
 El resultado de dicho filtrado nos deja con 6 observaciones. Es importante mencionar que hay que considerar el factor de ajuste.
-\end{itemize}
+
 
 ```{r }
 hog$ubi <- substr(hog$ubica_geo,1,2) #Separamos el código de la entidad
@@ -202,7 +203,7 @@ hog2 <- hog %>% dplyr::filter( edad_jefe >= 30 & edad_jefe <=40, clase_hog == 1,
 kable(hog2,booktabs = T, format = "latex", caption = "Relación Gasto-Ingreso para hogares unipersonales de edad entre 30 y 40 años de edad") %>% kable_styling(position = "center", latex_options = "HOLD_position")
 ```
 
-De nuevo asumimos un modelo lineal como en la ecuación \ref{reg}
+De nuevo asumimos un modelo lineal como en la ecuación 1-
 
 
 ```{r }
@@ -216,7 +217,7 @@ kable( booktabs = T, format = "latex", caption = "Hogares unipersonales de entre
 
 ```
 
-De nuevo podemos ver una relación directa entre ingreso y gasto. La relación es estadísticamente significativa y vemos que la intersección de la regresión es sustancialmente más baja. Esto se explica por el rango de edad que tomamos en cuenta. Además la población con las características requeridas, al incrementar su ingreso en un peso, aumenta su gasto en 90 centavos.
+De nuevo podemos ver una relación directa entre ingreso y gasto. La relación es estadísticamente significativa y vemos que la intersección de la regresión es sustancialmente más baja. Esto se explica por el rango de edad que tomamos en cuenta.La población con las características requeridas, al incrementar su ingreso en un peso, aumenta su gasto en 90 centavos.
 
 ```{r graf2}
 

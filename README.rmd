@@ -217,7 +217,7 @@ kable( booktabs = T, format = "latex", caption = "Hogares unipersonales de entre
 
 ```
 
-De nuevo podemos ver una relación directa entre ingreso y gasto. La relación es estadísticamente significativa y vemos que la intersección de la regresión es sustancialmente más baja. Esto se explica por el rango de edad que tomamos en cuenta.La población con las características requeridas, al incrementar su ingreso en un peso, aumenta su gasto en 90 centavos.
+De nuevo podemos ver una relación directa entre ingreso y gasto. La relación es estadísticamente significativa y vemos que la intersección de la regresión es sustancialmente más baja, a pesar de lo anterior, el intercepto no es significativo. Esto se explica por el rango de edad que tomamos en cuenta.La población con las características requeridas, al incrementar su ingreso en un peso, aumenta su gasto en 90 centavos.
 
 ```{r graf2}
 
@@ -288,13 +288,28 @@ hog %>% dplyr::filter(clase_hog == 1) %>%
 
 
 
+
+
+
 # *Ejercicio 5*
 
 # *Utilice el método del árbol binomial para, primero, explicar el precio P=80 de un activo y, después, valuar un ``call'' sobre dicho activo, con precio de ejercicio K=P-N donde N es el número de su equipo, (Grupo 1, use N=1, Grupo 2, use N=2, etc) asumiendo una tasa de interés de 5 por ciento:*
 
 Denotemos el precio del activo como $S_{0}=80$
 
+```{r}
+
+binomopt(s= 80, k=75, tt=0.25, r= 0.05, v= 0.30, d=0, nstep = 1)
+bin <- binomplot(s= 80, k=75, tt=0.25, r= 0.05, v= 0.30, d=0, nstep = 1, plotarrows = T, plotvalues = T)
 
 
+```
+
+
+```{r}
+
+
+bin <- binomplot(s= 80, k=75, tt=0.25, r= 0.05, v= 0.30, d=0, nstep = 4, plotarrows = T, plotvalues = T)
+```
 
 

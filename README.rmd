@@ -144,9 +144,6 @@ kable(head(hog1), booktabs = T, format = "latex", caption = "ENIGH 2012") %>% ka
 
 ```
 
-```{r}
-
-```
 
 
 
@@ -211,7 +208,7 @@ m1 <- lm( data= hog2, gasto_mon ~ ing_cor, weights = factor_hog)
 ```
 
 
-```{r }
+```{r reg2}
 lm( data= hog2, gasto_mon ~ ing_cor, weights = factor_hog) %>% broom::tidy() %>% 
 kable( booktabs = T, format = "latex", caption = "Hogares unipersonales de entre 30 y 40 años de la Ciudad de México") %>% kable_styling(position = "center", latex_options = "HOLD_position")
 
@@ -229,6 +226,9 @@ ggplot(hog2,aes(x = ing_cor, y= gasto_mon)) + geom_point()+geom_smooth(method = 
 
 
 ## *Para todos los hogares unipersonales, estime el valor promedio del ingreso por edad, separando la muestra en grupos de edad de cinco años cada uno y grafíquelo.*
+
+Para la realización de este ejercicio se utilizó la paquetería dplyr para segmentar los datos, así como la libería ggplot para graficar.
+El parámetro para determinar a los hogares unipersonales es la variable "clase_hog == 1". Los promedios por grupo de edad se muestran en la tabla \ref{tab:gedad}. Podemos destacar que los grupos con una peor expectativa de ingresos son aquellos de los extremos; personas muy jóvenes o muy grandes tienen un promedio de ingresos menor. Además el ingreso va aumentando hasta alcanzar un pico aproximadamente a los 50 años para después reducirse de forma paulatina.
 
 ```{r}
 hog %>% dplyr::filter(clase_hog == 1) %>% 
@@ -257,7 +257,7 @@ hog %>% dplyr::filter(clase_hog == 1) %>%
 ```
 
 
-```{r}
+```{r gedad}
 hog %>% dplyr::filter(clase_hog == 1) %>% 
   mutate(edad = case_when(edad_jefe >= 12 & edad_jefe <=15  ~ '12-15',
                           edad_jefe > 15 & edad_jefe <= 20 ~ '15-20',
@@ -286,30 +286,106 @@ hog %>% dplyr::filter(clase_hog == 1) %>%
 
 ## *Interprete sus resultados a la luz de la HIP y comparados con los resultados para las variables agregadas.*
 
-
-
-
+De las dos regresiones realizadas ( \ref{tab:reg2}) vemos una relación significativa entre el ingreso y el gasto, es decir, se pone en entre dicho la hipótisis de la caminata aleatoria. Además, podemos observar una relación más cercana entre ingreso y gasto para la población entre 30 y 40 años en hogares unipersonales. Los anterior es consistente con lo visto en clase, pues, esta población tiene más certidumbre sobre su futuro; probablemente estudios terminados o una situación laboral estable, por lo que un aumento en su ingreso es más probable que sea de carácter permanente y ante menor incertidumbre el ahorro precautorio es menor.
 
 
 # *Ejercicio 5*
 
-# *Utilice el método del árbol binomial para, primero, explicar el precio P=80 de un activo y, después, valuar un ``call'' sobre dicho activo, con precio de ejercicio K=P-N donde N es el número de su equipo, (Grupo 1, use N=1, Grupo 2, use N=2, etc) asumiendo una tasa de interés de 5 por ciento:*
+# Ejercicio 6
+*Utilice el método del árbol binomial para, primero, explicar el precio P=80 de un activo y, después, valuar un ``call'' sobre dicho activo, con precio de ejercicio K=P-N donde N es el número de su equipo, (Grupo 1, use N=1, Grupo 2, use N=2, etc) asumiendo una tasa de interés de 5 por ciento:*
 
-Denotemos el precio del activo como $S_{0}=80$
+Para el desarrollo de este ejercicio se utilizó la librería "derivmkts" y en concreto, el comando "binomopt". Dicho comando sigue el proceso de valuación de opciones que especifíca Hull(). Debido a lo anterior, en seguida se describe el procedimiento.
 
-```{r}
+Los árboles binomiales son un diagrama que representa los diferentes caminos que puede tomar el precio de un activo durante el periodo de vida de una opción. Este método se basa en el supuesto de que el precio de la acción sigue una caminata aleatoria. 
 
-binomopt(s= 80, k=75, tt=0.25, r= 0.05, v= 0.30, d=0, nstep = 1)
-bin <- binomplot(s= 80, k=75, tt=0.25, r= 0.05, v= 0.30, d=0, nstep = 1, plotarrows = T, plotvalues = T)
+Imaginemos un portafolio que consta de posiciones largas en $\Delta$ acciones, así como una posición corta en una opción. Denotemos con $f$ el precio del activo. Calculamos entonces el valor de $\Delta$ que hace que el portafolio no tenga riesgo. En el caso de un aumento del precio de la acción, el valor del portafolio al final de la vida de la opción es $S_{0}u \Delta - f_{u}$. En caso de un movimiento en dirección contraria el precio sería $S_{0}d \Delta - f_{d}$.
+Ambas son iguales cuando:
 
+\begin{equation*}
+S_{0}u \Delta - f_{u} = S_{0}d \Delta - f_{d}
+\end{equation*}
 
+Despejando $\Delta$ obtenemos lo siguiente:
+
+\begin{equation*}
+\Delta = \frac{f_{u}-f_{d}}{S_{0}u-S_{0}d}
+\end{equation*}
+En este caso el portafolio está libre de riesgo y por tanto no hay oportunidades de arbitraje. 
+Al denotar la tasa libre de riesgo como $r$, el valor presente del portafolio es
+
+\begin{equation*}
+(S_{0}u \Delta-f_{u})e^{-rT}
+\end{equation*}
+mientras que el costo de establecer el portafolio es 
+
+\begin{equation*}
+S_{0} \Delta - f
+\end{equation*}
+De donde obtenemos lo siguiente:
+
+\begin{equation*}
+(S_{0}u \Delta-f_{u})e^{-rT}=S_{0} \Delta - f
+\end{equation*}
+despejando $f$ y sustituyendo el valor de $\Delta$ obtenemos
+
+\begin{equation*}
+f= \frac{f_{d}(1-de^{-rT})+f_{d}(ue^{-rT-1})}{u-d}
+\end{equation*}
+Es decir, que el valor de una opción es:
+
+\begin{equation*}
+f = e^{-rT}(pf_{u}+(1-p)f_{d})
+\end{equation*}
+donde
+
+\begin{equation*}
+p = \frac{e^{rT}-d}{u-d}
+\end{equation*}
+
+Para ajustar la volatilidad se especifican los movimientos hacia arriba y hacia abajo de los activos subyacentes de la siguiente forma:
+
+\begin{equation*}
+u = e^{v\sqrt{tt}}
+\end{equation*}
+
+\begin{equation*}
+d = e^{-v\sqrt{tt}}
+\end{equation*}
+Por último se utiliza la paquetería "derivmkts" para valuar el precio de la acción con los siguientes parámetros:
+
+\begin{itemize}
+  \item Precio de la acción $S_{0} = 80$
+  \item Precio de ejercicio $k=75$ (equipo 5)
+  \item Tasa de interés anual libre de reisgo $r=0.05$
+  \item Tiempo de madurez en años $tt=1$
+  \item Rendimiento de dividendos $d=0$
+  \item número de pasos binomiales $nstep = 1$
+  \item volatilidad 0.20
+\end{itemize}
+
+En seguida se muestran los resultados:
+```{r, message=TRUE}
+binomopt(s= 80, k=75, tt=1, r= 0.05, v= 0.20, d=0, nstep = 1, returnparams = TRUE)
 ```
 
 
 ```{r}
+bin <- binomplot(s= 80, k=75, tt=1, r= 0.05, v= 0.20, d=0, nstep = 1, plotarrows = T, plotvalues = T)
 
 
-bin <- binomplot(s= 80, k=75, tt=0.25, r= 0.05, v= 0.30, d=0, nstep = 4, plotarrows = T, plotvalues = T)
+```
+
+Si cambiáramos a 5 pasos binomiales entonces el precio del activo es:
+
+```{r, message=TRUE}
+binomopt(s= 80, k=75, tt=1, r= 0.05, v= 0.20, d=0, nstep = 5, returnparams = TRUE)
+```
+
+
+
+```{r}
+
+bin <- binomplot(s= 80, k=75, tt=1, r= 0.05, v= 0.20, d=0, nstep = 5, plotarrows = T, plotvalues = T)
 ```
 
 

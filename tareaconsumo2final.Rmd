@@ -1,0 +1,1419 @@
+---
+title: " ![](C:/Users/rault/Downloads/colmex.png){width=6in} \\vspace{0.2in} Laboratorio II Macroeconomía\n \\  \ \ \n \n Consumo\n "
+author: 
+      - Diego Valencia ^[ dvalencia@colmex.mx]
+      - Ulises Ticona^[ uticona@colmex.mx]
+      - Raúl Tirado ^[ rtirado@colmex.mx]
+date: \today
+output: 
+  bookdown::pdf_document2:
+  toc: true
+  toc_depth: 2
+  tables: true
+  fig_caption: yes
+  toc-title: Contenido
+  urlcolor: blue
+
+header-includes:
+      - \usepackage{pdflscape}
+      - \usepackage{multirow}
+      - \usepackage[normalem]{ulem}
+      - \useunder{\uline}{\ul}{}
+      - \usepackage{float}
+      - \floatplacement{figure}{H}
+      - \usepackage[nottoc]{tocbibind}
+      - \renewcommand{\listfigurename}{Lista de figuras}
+      - \renewcommand{\listtablename}{Lista de tablas}
+      - \usepackage[utf8]{inputenc}
+      - \usepackage[spanish]{babel}
+      - \usepackage{graphicx}
+      - \usepackage{booktabs}
+      - \usepackage{amsmath}
+      
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+set.seed(47499)
+macro <- "C:/Users/rault/OneDrive/Desktop/COLMEX/macro2/t2"
+setwd(macro)
+
+pacman::p_load(MASS, dplyr, tidyr, ggplot2, tidyverse, ,readxl, writexl, plm, seasonal, tempdisagg, dynlm, fUnitRoots, kableExtra, readr,foreign, msm,lubridate,zoo, janitor,hexbin, magrittr, broom,tinytext, fOptions, derivmkts)
+
+
+```
+ 
+\pagebreak
+
+
+# Ejercicio 1
+*Resuelva los ejercicios 8.1, 8.2, 8.4, 8.5 y 8.6,  (Romer, 5a Ed). Realice estos con ayuda de su laboratorista y entregue las soluciones a máquina, utilizando LaTeX. [3 horas,1 punto cada inciso]
+
+## Ejercicio 8.1,Romer (5ta Edicion)
+8.1Life-cycle saving. (Modigliani and Brumberg, 1954.) Consider an individual who lives from 0 to T, and whose lifetime utility is given by $U= \int_{t=0}^{T} u(C(t)) \, dt$, where $u'( \cdot )>0$, $u''( \cdot )<0$. The individual’s income is $Y_{0} + gt$ for $0 \le t < R$, and $0$ for $R \le t \le T$. The retirement age, $R$, satisfies $0<R<T$. The interest rate is zero, the individual has no initial wealth, and there is no uncertainty.
+
+
+### Ejercicio (a)
+a. What is the individual’s lifetime budget constraint?
+
+El consumo que pueda tener un individuo es mayor o igual al Ingreso que recibe a lo largo de su vida. Entonces la restricción se plantea como:
+$$
+\int_{t=0}^{T} C(t)\,dt \le \int_{t=0}^{T}Y(t)\,dt
+$$
+Desarrollando la integral del lado derecho, sustituyendo el ingreso total como una función del ingreso permanente y el ingreso transitorio:
+$$
+\Rightarrow \int_{t=0}^{T}Y(t)\,dt = \int_{t=0}^{R}(Y_{0}+gt)\,dt
+$$
+Cuando el trabajador se jubila ya no acumula ingreso en la segunda integral, por lo tanto es igual a $0$, resolviendo obtenemos:
+$$
+\Rightarrow \int_{t=0}^{R}(Y_{0}+gt)\,dt = \left(Y_{0}t+\frac{gt^{2}}{2}\right) \Bigg\rvert_{0}^{R} = Y_{0}R+\frac{gR^{2}}{2}
+$$
+Su restricción perpetua será:
+$$
+\Rightarrow \int_{t=0}^{T} C(t)\,dt \le Y_{0}R+\frac{gR^{2}}{2}
+$$
+
+### Ejercicio (b)
+b. What is the individual’s utility-maximizing path of consumption, $C(t)$?
+
+Sabemos que ante una tasa de interés $r=0$ y descuento $\rho=0$ el modelo predice que el consumo en $C_t$ y $C_{t+1}$ son iguales, por lo tanto el consumo está dado por la restricción presupuestaria dividida entre todos los periodos:
+$$
+\overline{C_t} = \frac{1}{T}\left (Y_{0}R + \frac{gR^{2}}{2} \right) \ \ ,\ t \in [1,...,T]
+$$
+
+
+### Ejercicio (c)
+c. What is the path of the individual’s wealth as a function of $t$?
+
+La riqueza $W(t)$ es función del ahorro durante $S(t)$, que depende de la diferencia entre el ingreso y el consumo para cada perido, entonces:
+$$
+W(t) = \int_{t=0}^{t}S(t)\,dt = \int_{t=0}^{t}(Y(t)-C(t))\,dt 
+$$
+necesitamos contemplrar los dos estados donde el agente está empleado y no percibe ingresos:
+$$
+\Rightarrow \int_{t=0}^{t}(Y(t)-C(t))\,dt = \int_{t=0}^{R}(Y(t)-C(t))\,dt+\int_{t=R}^{t}(Y(t)-C(t))\,dt
+$$
+al sustituir el valor del consumo óptimo obtenemos el ingreso que se obtiene antes y despues del retiro:
+$$
+\Rightarrow W(t) = \int_{t=0}^{R}\left (Y_{0} + gt-\overline{C} \right)\,dt-\int_{t=R}^{t}\overline{C}\,dt
+$$
+Haciendo los calculos pertinentes obtenemos:
+$$
+\Rightarrow W(t)= \left[ Y_{0}t+\frac{gt^{2}}{2}-\overline{C}t  \Bigg\rvert_{0}^{R} \right]-\left[\overline{C}t\right \rvert_{R}^{t}]
+$$
+
+$$
+\Rightarrow W(t)= Y_{0}R+\frac{gR^{2}}{2}+\overline{C}t
+$$
+Entonces si $\overline{C} = \frac{1}{T}\left (Y_{0}R + \frac{gR^{2}}{2} \right)$ se puede expresar de la siguiente manera:
+$$
+\Rightarrow W(t)=T\overline{C}-\overline{C}t=\overline{C}(T-t)
+$$
+Finalmente, tenemos que la riqueza crece mientras el trabajador está empleado, es decir $S_t$ es positivo de $t=0$ a $R$, mientras que desahorra de $R$ a $T$, esto se debe a que mientras que trabaja está percibiendo un ingreso y acumulandolo para consumir en su retiro.
+
+
+## Ejercicio 8.2, Romer (5ta Edicion)
+8.2 The average income of farmers is less than the average income of non-farmers, but fluctuates more from year to year. Given this, how does the permanent-income hypothesis predict that estimated consumption functions for farmers and nonfarmers differ?
+
+sabemos que si se busca explicar el consumo como función del ingreso en una regresión lineal tendriamos $C_i = a + bY_i + u_i$:
+
+$$
+ \hat{a}=(1-\hat{b})\overline{Y}^{P} \qquad  \text{y} \qquad  \hat{b}=\frac{var(Y^P)}{var(Y^P)+var(Y^T)} \qquad 
+$$
+
+en donde $Y^P$ representa el ingreso permanente, $Y^T$ el ingreso transitorio. Por ejemplo, sabemos que el ingreso transitorio de los estudiantes de maestría presenta mayor fluctuación que el ingreso transitorio de los profesores de maestría, por lo que $var(Y^T)_A > var(Y^T)_{P}$. 
+
+Si la variación del ingreso permanente es igual para ambos, se obtendría que $\hat{b}_A<\hat{b}_{P}$. Esto implica que, en el modelo de los profesores se ajusta mejor al modelo de los estudiantes, ya que su pendiente sería más cercana a uno. Por tanto, un cambio en el ingreso de ambos grupos de la misma magnitud afecta más al consumo de los profesores. Otra conclusón es que solo los aumentos en el ingreso permanente incrementaran el consumo.
+
+
+## Ejercicio 8.4, Romer (5ta Edicion)
+8.4 In the model of Section 8.2, uncertainty about future income does not affect consumption.
+Does this mean that the uncertainty does not affect expected lifetime utility?
+
+Asumiendo una forma funcional cuadratica, podemos escribir ambos escenearios de la siguiente manera:
+
+$$
+\text{con certidumbre} \ \ \ U = \sum_{0}^{T}(C_t-\frac{a}{2}C_t^2) \quad \text{y} \quad \text{con incertidumbre} \ \  E[U] = E \left[ \sum_{0}^{T}(C_t-\frac{a}{2}C_t^2) \right ]
+$$
+Para el segundo caso, se tienen que; por Euler, el agente espera consumir en el periodo $t$ lo mismo que consumió en el periodo 1 $C_1 = E_1[C_t]$; la caminata aleatorio, $e_t$, tiene una medio igual cero: $E_{k}[e_{t}] = 0 \quad \forall t,k<t$; la HIP implica que $C_t = C_{t-1}+e_t$.
+
+si nos encontramos en en el periodo $t-1$ conocemos lo que pasa de forma contemporanea, tal que $E_{t-1}[C_{t-1}] = C_{t-1}$. Incorporando los anterior en $C_t$ con incertidumbre, obtenemos:
+
+
+\begin{equation*} 
+\begin{split}
+E[U]  &=  E \left [ \sum_{1}^{T}(C_t-\frac{a}{2}C_t^2) \right ] \\
+      &=  E \left [ \sum_{1}^{T}(C_{t-1}+e_t-\frac{a}{2}(C_{t-1}+e_t)^2 \right ] \\
+      &= E \left [ \sum_{1}^{T}(C_{t-1}+e_t-\frac{a}{2}(C_{t-1}^2+2C_{t-1}e_t+e_t^2) \right ] \\
+      &=  \sum_{1}^{T} \left [E[C_{t-1}]+E[e_t]-\frac{a}{2}(E[C_{t-1}^2]+2E[C_{t-1}e_t]+E[e_t^2]) \right ]\\
+      &=  \sum_{1}^{T} \left [C_{t-1}+E[e_t]-\frac{a}{2}(E[C_{t-1}^2]+2C_{t-1}E[e_t]+var[e_t]+E[e_t]^2) \right ] \\
+      &=  \sum_{1}^{T} \left [C_{t-1}-\frac{a}{2}(C_{t-1}^2+var[e_t]) \right ]
+\end{split}
+\end{equation*}
+
+
+Podemos notar que el la utilidad perpetua del aente es mayor en el caso con certidumbre que con incertidumbre, ya que: 
+$$
+E[U] = \sum_{1}^{T} \left [C_{t-1}-\frac{a}{2}(C_{t-1}^2+var[e_t]) \right ] \leq \sum_{0}^{T}(C_{t-1}-\frac{a}{2}C_{t-1}^2) = U
+$$
+
+
+Por lo tanto, la incertidumbre afecta a la utilidad esperada perpetua.
+
+
+## Ejercicio 8.5, Romer (5ta Edicion)
+8.5 (This follows Hansen and Singleton, 1983.) Suppose instantaneous utility is of the
+constant-relative-risk-aversion form, $u(C_{t})= \frac{C_{t}^{1- \theta}}{1- \theta}$, $\theta >0$. Assume that the real interest rate, $r$ , is constant but not necessarily equal to the discount rate, $\rho$.
+
+### Ejercicio (a)
+a. Find the Euler equation relating $C_{t}$ to expectations concerning $C_{t+1}$.}
+
+Por euler sabemos que:
+
+$$
+U(C_t) = \frac{C_t^{1-\theta}}{1-\theta} \\\ y\\\ U(C_t+1)=\frac{1}{(1-\rho)(1-\theta)}E[C_{t+1}^{1-\theta}]
+$$
+
+$$
+U(C_t,C_{t+1}) = u(C_t)+\frac{1}{1+\rho}E[u(C_{t+1})]=
+\frac{C_t^{1-\theta}}{1-\theta}+\frac{1}{(1-\rho)(1-\theta)}E[C_{t+1}^{1-\theta}]
+$$
+
+La restricción presupuestaria es función de:
+
+$$
+E[C_{t+1}]=(1+t)w+(1+r)C_t
+$$
+
+La riqueza $w$  toma en cuenta los ingresos en $t+1$.la pendiente de la restricción es la tasa de descuento $1+r$. Esto se puede ver como el costo de oportunidad de renunciar a una unidad de consumo para consumir $1+r$ unidades mañana.
+
+siguiendo con el problema de maximización, tenemos que en el óptimo es igual a la pendiente de la restricción presupuestaria tal que tendríamos:
+
+$$
+ \frac{ \partial U(\cdot)}{ \partial C_t}=C^{-\theta}_t \quad \text{y} \quad \frac{ \partial  U(\cdot)}{ \partial C_{t+1}}=\frac{E[C^{-\theta}_{t+1}]}{1-\rho}.
+$$
+por condiciones de optimalidad sabemos que:
+
+$$
+ \frac{(1-\rho)C^{-\theta}_t}{E[C^{-\theta}_t]} = 1+r 
+$$
+$$
+\text{Si y solo si}
+\quad C^{-\theta}_t=\left ( \frac{1+r}{1+\rho} \right)E[C^{-\theta}_{t+1}]
+$$
+
+### Ejercicio (b)
+b. Suppose that the log of income is distributed normally, and that as a result the log of $C_{t+1}$ is distributed normally; let $\sigma^{2}$ denote its variance conditional on information available at time $t$. Rewrite the expression in part (a) in terms of $ln C_{t}$ , $\mathbb{E}_{t}[lnC_{t+1}]$, $\sigma^{2}$, and the parameters $r$ , $\rho$, and $\theta$ . (Hint: If a variable $x$ is distributed normally with mean $\mu$ and variance $V$, $\mathbb{E}[e^{x}] = e^{\mu} e^{V/2}$.)
+
+Tenemos que $lnC_{t+1}$ se distribuye normal con media $ln[C_{t+1}]$ y varianza$\sigma^2$. Reescribiendo la escuación obtenida anteriormente, tendriamos:
+
+
+\begin{equation*} 
+\begin{split}
+-\theta ln C_t  &=  ln \left [ \frac{1+r}{1+\rho}E[C^{-\theta}_{t+1}] \right ] \\
+      &=  ln(1+r)-ln(1+\rho)+lnE[C^{-\theta}_{t+1}] \\
+      &=  ln(1+r)-ln(1+\rho)+lnE[e^{-\theta lnC_{t+1}}]\\
+      &=  ln(1+r)-ln(1+\rho)+ln[e^{-\theta E(lnC_{t+1})}e^{\sigma^2/2}] \\
+      &= ln(1+r)-ln(1+\rho)-\theta E[C_{t+1}] + \sigma^2/2 \\
+lnC_t &= \frac{ln(1+ \rho)-ln(1+r)}{\theta} + E[C_{t+1}] - \frac{\sigma^2}{2\theta}
+\end{split}
+\end{equation*}
+
+
+### Ejercicio (c)
+c. Show that if $r$ and $\sigma^{2}$ are constant over time, the result in part (b) implies that the log of consumption follows a random walk with drift: $lnC_{t+1} = a + lnC_{t} + u_{t+1}$, where $u$ is white noise.
+
+De la anterior obtenemos $E[lnC_{t+1}]$:
+$$
+E[lnC_{t+1}] = lnC_t + \frac{ln(1+r)-ln(1+ \rho)}{\theta} + \frac{\sigma^2}{2\theta}
+$$
+Notamos que se cumple la condición de Euler, más un margen de error que es constante, ya que $a=\frac{ln(1+r)-ln(1+ \rho)}{\theta} + \frac{\sigma^2}{2\theta}$. Sustituyendo por:
+
+$$
+E[lnC_{t+1}] = a + lnC_t + u_t.
+$$
+
+### Ejercicio (d)
+d. How do changes in each of $r$ and $\sigma^{2}$ affect expected consumption growth, $\mathbb{E}_{t}[lnC_{t+1}-lnC_{t}]$? Interpret the effect of $\sigma^{2}$ on expected consumption growth in light of the discussion of precautionary saving in Section 8.6.
+
+Reescribiendo con lo anterior:
+
+$$
+E[lnC_{t+1}-lnC_t] + \frac{ln(1+r)-ln(1+ \rho)}{\theta} + \frac{\sigma^2}{2\theta}
+$$
+Derivando para obtener los efectos parciales, tenemos que:
+
+$$
+\frac{\partial E(\cdot)}{ \partial r} = \frac{1}{\theta(1+r)}>0 \quad \text{y} \quad \frac{\partial E(\cdot)}{ \partial \sigma^2} = \frac{1}{2\theta}>0.
+$$
+Sabemos que el agente es averso al riesgo, ya que su función es CRRA, lo que implica que un aumento de la tasa de interes traerá consigo un incremento en el consumo esperado. Este resultado también se deriva de la definición de ahorro precautorio, ya que la tercera derivada de la función es positiva. Esto implica que la utilidad marginal del agente es una función convexa del consumo. Entonces un aumento en la varianza  aumentará el valor de la utilidad marginal esperada por el consumo en el futuro y por lo tanto incrementará el ahorro del agente..
+
+
+## Ejercicio 8.6, Romer (5ta Edicion)
+8.6 A framework for investigating excess smoothness. Suppose that $C_{t}= \left( \frac{r}{1 + r} \right) \left (A_{t} + \sum_{s=0}^{\infty} \frac {\mathbb{E}[Y_{t+s}]}{(1+r)^{s}} \right)$.
+
+
+### Ejercicio (a)
+a. Show that these assumptions imply that $\mathbb{E}_{t}[C_{t +1}] = C_{t}$ (and thus that consumption follows a random walk) and that $\sum_{s=0}^{\infty}\frac {\mathbb{E}_{t}[C_{t+s}]}{(1+r)^{s}}=A_{t} + \sum_{s=0}^{\infty} \frac {\mathbb{E}_{t}[Y_{t+s}]}{(1+r)^{s}}$.
+
+Sustituimos $C_{t}$ la expresión para $A_{t+1}$
+$$
+A_{t+1}=(1+r)(A_{t}+Y_{t}-C_{t})=(1+r)\left (A_{t}+Y_{t}-\left( \frac{r}{1 + r} \right) \left (A_{t} + \sum_{s=0}^{\infty} \frac {\mathbb{E}_{t}[Y_{t+s}]}{(1+r)^{s}} \right)\right)
+$$
+$$
+\Rightarrow A_{t+1}= A_{t}+Y_{t}-r\left (\sum_{s=1}^{\infty} \frac {\mathbb{E}_{t}[Y_{t+s}]}{(1+r)^{s}} \right)
+$$
+
+Dado que $C_{t+1}$ depende de $A_{t+1}$
+$$
+C_{t+1}=\left(\frac{r}{1+r}\right)\left(A_{t+1}+\sum_{s=0}^{\infty}\frac{\mathbb{E}_{t+1}[Y_{t+1+s}]}{(1+r)^s} \right)=\left( \frac{r}{1+r}\right)\left(A_{t}+Y_{t}-r\left( \sum_{s=1}^{\infty} \frac{\mathbb{E}_{t}[Y_{t+s}]}{(1+r)^{s}}\right)+\sum_{s=0}^{\infty}\frac{\mathbb{E}_{t+1}[Y_{t+1+s}]}{(1+r)^{s}} \right)
+$$
+Aplicando el valor esperado en tiempo t $\mathbb{E}_{t}$ de ambos lados de la ecuación y por propiedades de esperanza:
+$$
+\mathbb{E}_{t}[C_{t+1}]=\left( \frac{r}{1+r}\right)\left(A_{t}+Y_{t}-r\left( \sum_{s=1}^{\infty} \frac{\mathbb{E}_{t}[Y_{t+s}]}{(1+r)^{s}}\right)+\sum_{s=1}^{\infty}\frac{\mathbb{E}_{t}[Y_{t+s}]}{(1+r)^{s}}-Y_{t} \right)
+$$
+$$
+\Rightarrow \mathbb{E}_{t}[C_{t+1}]=\left(\frac{r}{1+r}\right)\left(A_{t}+\sum_{s=0}^{\infty}\frac{\mathbb{E}_{t}[Y_{t+s}]}{(1+r)^{s}} \right)
+$$
+Se comprueba que $\mathbb{E}_{t}[C_{t+1}]=C_t$, el consumo sigue una caminata aleatoria, los cambios de consumo dependen de cambios inesperados. De tal manera, el mejor estimador para $C_{t+s}$ es $C_{t}$
+$$
+\Rightarrow \mathbb{E}_{t}[C_{t+1}]=\left(\frac{r}{1+r}\right)\left(A_{t}+\sum_{s=0}^{\infty}\frac{\mathbb{E}_{t}[Y_{t+s}]}{(1+r)^{s}} \right)
+$$
+
+### Ejercicio (b)
+b. Suppose hat $\Delta Y_{t} = \phi \Delta Y_{t-1}+u_{t}$, where $u$ is white noise. Suppose that $Y_{t}$ exceeds $\mathbb{E}_{t-1}[Y_{t}]$ by $1$ unit (that is, suppose $u_{t} = 1$). By how much does consumption increase?
+
+Tomando el valor esperado, como $t-1$ en ambos lados
+
+$$
+\Rightarrow \mathbb{E}_{t-1}[C_{t}]=\left(\frac{r}{1+r}\right)\left(A_{t}+\sum_{s=0}^{\infty}\frac{\mathbb{E}_{t-1}[Y_{t+s}]}{(1+r)^{s}} \right)
+$$
+Usando el hecho de que $A_t = (1+r)[A_{t-1} + Y_{t-1} -C_{t-1}]$ no tiene incertidumbre en t-1. Usando la ley de expectativas iteradas sabemos que $\mathbb{E}_{t-1}\mathbb{E}_{t}[Y_{t+s}]=\mathbb{E}_{t-1}[Y_{t+s}]$. Entonces, tenemos:
+
+$$ 
+C_{t-1} - \mathbb{E}_{t-1}[C_{t}]=\frac{r}{1+r}\sum_{s=0}^{\infty}\frac{\mathbb{E}_{t}[Y_{t+s}] - \mathbb{E}_{t-1}[Y_{t+s}] }{(1+r)^{s}}
+$$
+El choque sobre el consumo será una fracción de $\frac{r}{1+r}$ del valor presente del ingreso de toda su vida. Después,necesitamos determinar el cambio en la expectativa del ingreso de toda su vida. Si se espera que sea mayor, entonces $u_t = 1$ y $Y_t - \mathbb{E}_{t-1}[Y_{t}]=1$.
+
+Entonces para el periodo $t+1$ sabemos que $\Delta Y_{t+1} =\phi \Delta Y_t + u_t$, por lo que el nivel de  $\phi \Delta Y_t$ es $\phi$ veces más grande.
+
+$$
+\Rightarrow \frac{\mathbb{E}_{t}[Y_{t+1}] - \mathbb{E}_{t-1}[Y_{t+1}]}{1+r} = \frac{1+ \phi }{1 + r}
+$$
+
+$$
+\frac{\mathbb{E}_{t}[Y_{t+2}] - \mathbb{E}_{t-1}[Y_{t+2}]}{(1+r)^{2}}  = \frac{1+ \phi + \phi^{2} }{(1 + r)^{2}}
+$$
+Finalmente, generalizando la expresión para $t+s$:
+$$
+\sum_{s=0}^{\infty} \frac{\mathbb{E}_{t}[Y_{t+s}] - \mathbb{E}_{t-1}[Y_{t+s}]}{(1+r)^{s}}
+$$
+A partir de lo anterior, podemos obtener el cambio en el consumo en $C_t - \mathbb{E}_{t-1}[C_{t}]$
+$$
+\Rightarrow  C_t - \mathbb{E}_{t-1}[C_{t}] = \frac{1+r}{1+r- \phi} 
+$$
+
+
+### Ejercicio (c)
+c. For the case of $\phi>0$, which has a larger variance, the innovation in income, $u_{t}$, or the innovation in consumption, $C_{t} - \mathbb{E}_{t-1}[C_{t}]$? Do consumers use saving and borrowing to smooth the path of consumption relative to income in this model? Explain.
+
+si $\frac{1+r}{1+r- \phi} > 1$ la variancia del error del consumo es mayor a la variancia del error del ingreso. Entonces, en promedio cuando hay choques en el ingreso, los individuos experimentan variaciones en el consumo en periodos posteriores en la misma dirección. 
+
+$$
+var(C_{t}-\mathbb{E}_{t-1}[C_{t}]) = var\left(\frac{(1+r)}{1+r - \phi} \right)= \left(\frac{(1+r)}{1+r - \phi} \right)^{2}
+$$
+
+*
+*Cree un vector de 20 ingresos permanentes aleatorios $Y_i^P$, distribuidos normalmente, con media 10 y varianza $\sigma^P$. Cree 20 vectores (cada uno de estos vectores representa una persona) cada uno con 100 observaciones idénticas del ingreso permanente. Grafíquelos (eje x, persona; eje y, ingreso permanente)*
+
+
+
+
+# Ejercicio 2
+## a)
+*Cree un vector de 20 ingresos permanentes aleatorios $Y_i^P$, distribuidos normalmente, con media 10 y varianza $\sigma^P$. Cree 20 vectores (cada uno de estos vectores representa una persona) cada uno con 100 observaciones idénticas del ingreso permanente. Grafíquelos (eje x, persona; eje y, ingreso permanente).*
+
+En este inciso, creamos 20 vectores normalmente distribuidos con 100 observaciones del ingreso permanente que representan a cada persona. Seleccionamos una desviación estándar de $\sigma$ = 0.25 y una media de diez. 
+
+``` {r inciso2a,echo=FALSE, fig.cap="Boxplot del ingreso permanente ", fig.pos='H'}
+ 
+
+
+cp <- list()
+
+for (i in 1:20) {
+  
+
+cp[[i]] <- rnorm(1:100 , mean =10,sd=0.5)
+
+
+}
+
+
+perma <- data.frame(matrix(unlist(cp), nrow = length(cp), byrow = TRUE))
+perma <- as.data.frame(t(as.matrix(perma)))
+
+for (i in 1:20){
+  
+names(perma)[i] <- paste("P", i, sep = "")
+
+
+}
+
+boxplot(perma,
+        horizontal = FALSE, 
+        lwd = 2,
+        col = rgb(1, 0, 0, alpha = 0.4), 
+        xlab = "Persona", 
+        ylab = "Ingresos permanentes", 
+        main = "", 
+        notch = TRUE,
+        border = "black",  
+        outpch = 25,       
+        outbg = "green",   
+        whiskcol = "blue", 
+        whisklty = 2,      
+        lty = 1) 
+
+
+```
+
+Al graficarlos podemos notar como la media se ubica alrededor de 10, con un ingreso permanente entre 8.5 y 11.5, para todas las personas de la muestra aleatoria. 
+
+## b)
+*Cree 20 vectores de 100 ingresos transitorios aleatorios $Y_{i,t}^T$, distribuidos normalmente, con media 0 y con varianza $\sigma^T$. Grafíquelos.*
+
+Al igual que en el inciso anterior, creamos 20 vectores normalmente distribuidos con 100 observaciones del ingreso transitorio para cada persona. Seleccionamos una desviación estándar de $\sigma$ = 1 y una media de cero. 
+
+``` {r inciso2b, echo=FALSE, fig.cap= "Boxplot del ingreso transitorio", fig.pos='H'}
+ 
+
+
+ct <- list()
+
+for (i in 1:20) {
+  
+
+ct[[i]] <- rnorm(1:100 , mean =0, sd = 1)
+
+
+}
+
+
+trans <- data.frame(matrix(unlist(ct), nrow = length(cp), byrow = TRUE))
+trans <- as.data.frame(t(as.matrix(trans)))
+
+for (i in 1:20){
+  
+names(trans)[i] <- paste("P", i, sep = "")
+}
+
+boxplot(trans,
+        horizontal = FALSE, 
+        lwd = 2,
+        col = rgb(1, 0, 0, alpha = 0.4), 
+        xlab = "Persona", 
+        ylab = "Ingresos transitorios", 
+        main = "", 
+        notch = TRUE,
+        border = "black",  
+        outpch = 25,       
+        outbg = "green",   
+        whiskcol = "blue", 
+        whisklty = 2,      
+        lty = 1) 
+
+
+
+
+```
+
+Al graficarlos podemos notar como la media se ubica alrededor de cero, con un ingreso transitorio entre 3 y -3, para todas las personas de la muestra aleatoria. 
+
+## c)
+*Cree 20 vectores de 100 ingresos totales $Y_{i,t}$, sumando el ingreso transitorio y el permanente. Grafíquelos.*
+
+El resultado de los ingresos totales para cada persona $i$ es $Y_{t,i}^{Totales} = Y_{t,i}^{P} + Y_{t,i}^{Tran}$, y como se puede notar, la media sigue siendo estadísticamente diez. Al agregar ambas series podemos esperar que haya un aumento de la volatilidad de los ingresos, que se comprueba, ya que ahora el ingreso total oscila entre 4 y 16.5.
+
+``` {r inciso2c, echo=FALSE, fig.cap="Boxplot del ingreso total ", fig.pos='H'}
+totales <- trans + perma
+
+boxplot(totales,
+        horizontal = FALSE, 
+        lwd = 2,
+        col = rgb(1, 0, 0, alpha = 0.4), 
+        xlab = "Persona", 
+        ylab = "Ingresos totales", 
+        main = "", 
+        notch = TRUE,
+        border = "black",  
+        outpch = 25,       
+        outbg = "green",   
+        whiskcol = "blue", 
+        whisklty = 2,      
+        lty = 1) 
+
+```
+
+## d)
+*Cree 20 vectores de 100 errores de medición $\epsilon_{i,t}$, distribuidos normalmente, con media 0 y varianza $\sigma^\epsilon>0$. Grafíquelos.*
+
+Generamos una serie de error con una desviación estándar de $\sigma$ = 0.5, para cada persona $i$.
+``` {r inciso2d, echo=FALSE, fig.cap="Boxplot del error ", fig.pos='H'}
+
+e <- list()
+
+for (i in 1:20) {
+  
+
+e[[i]] <- rnorm(1:100 , mean =0, sd= 0.5)
+
+
+}
+
+
+error <- data.frame(matrix(unlist(e), nrow = length(e), byrow = TRUE))
+error <- as.data.frame(t(as.matrix(error)))
+
+for (i in 1:20){
+  
+names(error)[i] <- paste("E", i, sep = "")
+
+
+}
+
+boxplot(e,
+        horizontal = FALSE, 
+        lwd = 2,
+        col = rgb(1, 0, 0, alpha = 0.4), 
+        xlab = "Persona", 
+        ylab = "error", 
+        main = "", 
+        notch = TRUE,
+        border = "black",  
+        outpch = 25,       
+        outbg = "green",   
+        whiskcol = "blue", 
+        whisklty = 2,      
+        lty = 1) 
+
+
+
+```
+
+
+## e)
+*Cree  20 vectores de 100 consumos $C_{i,t}$ cada uno, de acuerdo a la siguiente regla $C_{i,t}=Y_i^P+0.1Y_{i,t}^T+\epsilon_{i,t}$. Grafíquelos.*
+
+A partir de la especificación del inciso construimos una serie del consumo para cada persona $i$, con $C_{t,i}= Y_{t,i}^{P} + 0.1Y_{t,i}^{Tran} + e_{t,i}$. La gráfica del consumo de cada persona se presenta a continuación. 
+
+``` {r inciso2e, echo=FALSE, fig.cap="Boxplot del consumo ", fig.pos='H'}
+consumo <- perma + 0.1*trans + error
+
+boxplot(consumo,
+        horizontal = FALSE, 
+        lwd = 2,
+        col = rgb(1, 0, 0, alpha = 0.4), 
+        xlab = "Persona", 
+        ylab = "Consumo", 
+        main = "", 
+        notch = TRUE,
+        border = "black",  
+        outpch = 25,       
+        outbg = "green",   
+        whiskcol = "blue", 
+        whisklty = 2,      
+        lty = 1) 
+
+
+
+```
+
+La media de consumo para cada persona es estadísticamente igual a diez, y se encuentra entre 8 y 12 unidades. 
+
+## f)
+*Estime la relación lineal entre ingreso total y consumo $C_{i,t}=\alpha+\beta Y_{i,t}+\epsilon_{i,t}$. Describa el resultado de su estimación y grafíque la relación entre las observaciones del consumo y las del ingreso.*
+
+Para obtener la relación que existe entre el consumo y el ingreso estimamos un panel lineal con efectos aleatorios. Podemos notar como $\sigma_{Y_t^{P}} = 0.5 < 1=  \sigma_{Y_t^{Tran}}$, por lo que podemos esperar que la $\hat{b}$ se aproxime a cero, y que sea el intercepto el que ajuste la regresión. Podemos ver en la siguiente tabla los resultados de la estimación:
+
+``` {r inciso2fc, echo=FALSE}
+
+Nombre <- c("Intercepto", "Pendiente", "Rsqr")
+Ingreso <- c("8.4248743***","0.1576358***","0.18408")
+cuadro1 <- cbind(Nombre, Ingreso)
+kbl(cuadro1, booktabs = T,  caption = "Estimación") %>%
+kable_styling(position = "center",latex_options = c("striped", "hold_position")) %>%
+footnote(general = "(***) significativo al 99%, (**) al 95% y (*) al 90%. ",general_title = "Nota: ")
+```
+
+kbl(uroot, booktabs = T,  caption = "Prueba de raíz unitaria") %>%
+kable_styling(position = "center",latex_options = c("striped", "hold_position"))
+
+Podemos ver que el intercepto tiene un valor de 8.42 y la pendiente de 0.15, ambos significativos al 99%. Podemos ver que la bondad de ajuste es baja con un valor de $R^{2} = 0.18$,  lo que significa que solo el 18% de las variaciones del consumo se explican por las variaciones del ingreso total. 
+
+``` {r inciso2f, echo=FALSE, fig.cap="Diagrama de dispersión Consumo-Ingreso ", fig.pos='H'}
+
+consumo <- stack(consumo)
+ingreso <- stack(totales)
+
+names(consumo)[1] <- 'cons'
+names(ingreso)[1] <- 'y'
+
+
+tiempo <- data.frame(rep((1:100),20))
+
+
+panel <- cbind.data.frame(consumo, ingreso)
+
+panel <- cbind(panel, tiempo)
+
+names(panel)[5] <- "tiempo" 
+
+panel <-panel[,-2]
+
+cons_mod <- plm(cons ~ y, 
+                    data = panel,
+                    index = c("ind", "tiempo"),model = "random")
+
+plot(panel$y, panel$cons, main = "",
+     xlab = "Ingreso", ylab = "Consumo",
+     pch = 19, frame = FALSE)
+abline(lm(cons ~ y, data = panel), col = "blue")
+
+
+```
+
+Otra aproximación al problema de la estimación es hacer un diagrama de dispersión donde corramos una regresión lineal entre el ingreso y el consumo sin hacer distinción entre las personas. Al igual que en el caso anterior, vemos una pendiente positiva y un intercepto de aproximadamente 9.
+
+## g)
+*Incremente la varianza del ingreso permanente, y disminuya la varianza del ingreso transitorio y vuelva a estimar y graficar la relación entre el consumo y el ingreso.*
+
+Como en el inciso anterior, estimamos la relación que existe entre el consumo y el ingreso con un panel lineal con efectos aleatorios. Podemos notar como $\sigma_{Y_t^{P}} = 2 > 0.5 = \sigma_{Y_t^{Tran}}$, por lo que podemos esperar que la $\hat{b}$ se aproxime a uno, y que el intercepto juegue un rol menos preponderante en la explicación del consumo. Podemos ver en la siguiente tabla los resultados de la estimación:
+
+``` {r inciso2gc, echo=FALSE}
+Nombre <- c("Intercepto", "Pendiente", "Rsqr")
+Ingreso <- c("0.622689***","0.937402***","0.88983")
+
+cuadro2 <- cbind(Nombre, Ingreso)
+kbl(cuadro2, booktabs = T,  caption = "Estimación") %>%
+kable_styling(position = "center",latex_options = c("striped", "hold_position")) %>%
+footnote(general = "(***) significativo al 99%, (**) al 95% y (*) al 90%. ",general_title = "Nota: ")
+```
+
+
+Podemos ver que el intercepto tiene un valor de 0.62 y la pendiente de 0.93, ambos significativos al 99%. Podemos ver que la bondad de ajuste es alta con un valor de $R^{2} = 0.88$,  lo que significa que el 88% de las variaciones del consumo se explican por las variaciones del ingreso total. 
+Si lo comparamos con el modelo anterior, podemos notar que se cumple lo visto durante el curso [$\hat{b} = \frac{1}{1+\frac{var(Y^{Tran})}{var(Y^{P})}}$], ya que si las variaciones del ingreso permanente son mayores a las del ingreso transitorio, veremos una mayor explicación del ingreso total sobre el consumo. 
+
+``` {r inciso2g, echo=FALSE, fig.cap="Diagrama de dispersión Consumo-Ingreso", fig.pos='H'}
+cp <- list()
+
+for (i in 1:20) {
+  
+
+cp[[i]] <- rnorm(1:100 , mean =10, sd=2)
+
+
+}
+
+
+perma <- data.frame(matrix(unlist(cp), nrow = length(cp), byrow = TRUE))
+perma <- as.data.frame(t(as.matrix(perma)))
+
+for (i in 1:20){
+  
+names(perma)[i] <- paste("P", i, sep = "")
+
+
+}
+
+ct <- list()
+
+for (i in 1:20) {
+  
+
+ct[[i]] <- rnorm(1:100 , mean =0, sd = 0.5)
+
+
+}
+
+
+trans <- data.frame(matrix(unlist(ct), nrow = length(cp), byrow = TRUE))
+trans <- as.data.frame(t(as.matrix(trans)))
+
+for (i in 1:20){
+  
+names(trans)[i] <- paste("P", i, sep = "")
+}
+
+
+
+consumo <- perma + 0.1*trans + error
+totales <- trans + perma
+
+
+consumo <- stack(consumo)
+ingreso <- stack(totales)
+
+names(consumo)[1] <- 'cons'
+names(ingreso)[1] <- 'y'
+
+
+tiempo <- data.frame(rep((1:100),20))
+
+
+panel <- cbind.data.frame(consumo, ingreso)
+
+panel <- cbind(panel, tiempo)
+
+names(panel)[5] <- "tiempo" 
+
+panel <-panel[,-2]
+
+cons_mod2 <- plm(cons ~ y, 
+                    data = panel,
+                    index = c("ind", "tiempo"),model = "random")
+
+plot(panel$y, panel$cons, main = "",
+     xlab = "Ingreso", ylab = "Consumo",
+     pch = 19, frame = FALSE)
+abline(lm(cons ~ y, data = panel), col = "blue")
+
+
+
+```
+
+En la aproximación alternativa del problema ocurre algo similar, ya que podemos ver en el diagrama de dispersión como se compactan los datos sobre la regresión lineal, por lo que su relación positiva es aún más clara.
+
+## h)
+*Disminuya la varianza del ingreso permanente, y aumente la varianza del ingreso transitorio y vuelva a estimar y graficar la relación entre el consumo y el ingreso.*
+
+Ahora estimamos la relación que existe entre el consumo y el ingreso con un panel lineal con efectos aleatorios ante un incremento en la variación de los ingresos transitorios y una disminución de la variación de los ingresos permanentes. Podemos notar como $\sigma_{Y_t^{P}} = 0.2 > 3 = \sigma_{Y_t^{Tran}}$, podemos esperar que la $\hat{b}$ se aproxime a cero, y que el intercepto juegue un rol más preponderante en la explicación del consumo. Podemos ver en la siguiente tabla los resultados de la estimación:
+
+``` {r inciso 2hc, echo=FALSE}
+Nombre <- c("Intercepto", "Pendiente", "Rsqr")
+Ingreso <- c("8.9783544***","0.1011115***","0.25733")
+
+cuadro3 <- cbind(Nombre, Ingreso)
+kbl(cuadro3, booktabs = T,  caption = "Estimación") %>%
+kable_styling(position = "center",latex_options = c("striped", "hold_position")) %>%
+footnote(general = "(***) significativo al 99%, (**) al 95% y (*) al 90%. ",general_title = "Nota: ")
+```
+
+
+Podemos ver que el intercepto tiene un valor de 8.97 y la pendiente de 0.10, ambos significativos al 99%. Podemos ver que la bondad de ajuste es alta con un valor de $R^{2} = 0.25$,  lo que significa que solo el 25% de las variaciones del consumo se explican por las variaciones del ingreso total. 
+Si lo comparamos con el modelo anterior, podemos notar que se cumple lo visto durante el curso [$\hat{b} = \frac{1}{1+\frac{var(Y^{Tran})}{var(Y^{P})}}$], ya que si las variaciones del ingreso permanente son menores a las del ingreso transitorio, veremos una menor explicación del ingreso total sobre el consumo. 
+
+
+``` {r inciso2h, echo=FALSE, fig.cap="Diagrama de dispersión Consumo-Ingreso ", fig.pos='H'}
+
+cp <- list()
+
+for (i in 1:20) {
+  
+
+cp[[i]] <- rnorm(1:100 , mean =10, sd=0.2)
+
+
+}
+
+
+perma <- data.frame(matrix(unlist(cp), nrow = length(cp), byrow = TRUE))
+perma <- as.data.frame(t(as.matrix(perma)))
+
+for (i in 1:20){
+  
+names(perma)[i] <- paste("P", i, sep = "")
+
+
+}
+
+ct <- list()
+
+for (i in 1:20) {
+  
+
+ct[[i]] <- rnorm(1:100 , mean =0, sd = 3)
+
+
+}
+
+
+trans <- data.frame(matrix(unlist(ct), nrow = length(cp), byrow = TRUE))
+trans <- as.data.frame(t(as.matrix(trans)))
+
+for (i in 1:20){
+  
+names(trans)[i] <- paste("P", i, sep = "")
+}
+
+
+
+consumo <- perma + 0.1*trans + error
+totales <- trans + perma
+
+
+consumo <- stack(consumo)
+ingreso <- stack(totales)
+
+names(consumo)[1] <- 'cons'
+names(ingreso)[1] <- 'y'
+
+
+tiempo <- data.frame(rep((1:100),20))
+
+
+panel <- cbind.data.frame(consumo, ingreso)
+
+panel <- cbind(panel, tiempo)
+
+names(panel)[5] <- "tiempo" 
+
+panel <-panel[,-2]
+
+cons_mod3 <- plm(cons ~ y, 
+                    data = panel,
+                    index = c("ind", "tiempo"),model = "random")
+
+plot(panel$y, panel$cons, main = "",
+     xlab = "Ingreso", ylab = "Consumo",
+     pch = 19, frame = FALSE)
+abline(lm(cons ~ y, data = panel), col = "blue")
+
+
+
+```
+
+En la aproximación alternativa del problema ocurre algo similar, ya que podemos ver en el diagrama de dispersión como se separan más los datos sobre la regresión lineal, por lo que su relación positiva es menos clara.
+
+# Ejercicio 3
+**Estudie el consumo agregado en México siguiendo estos pasos: [3 horas, 0.5 puntos cada inciso]**
+
+## a)
+*Obtenga, del Inegi, datos de $C_t$, el consumo agregado en México, de $Y_t$, el producto agregado, de $I_t$, la inversión agregada, de $G_t$, el gasto del gobierno y de , de $NX_t$, las exportaciones netas,  entre 1980 y el tercer trimestre de 2019, EN TÉRMINOS REALES.*
+
+Obtuvimos del Banco de Indicadores de Información Estadística en el INEGI(2022) las series de; consumo agregado ($C_t$), medido como el gastos de consumo privado total; producto agregado ($Y_T$), medido a través del PIB; la inversión agregada ($I_t$), como el índice de inversión fija bruta; y las exportaciones netas ($XN_t$), como el saldo de la balanza comercial total. Todas las variables se encontraban a precios constantes de 2013 y se construyó un índice base 2013Q3. A continuación se presenta la gráfica con las variables mencionadas:
+```{r 3a, echo=FALSE, include=FALSE, warning=FALSE}
+setwd(macro)
+x <- read_xlsx("series.xlsx",sheet=1)
+y <- read_xlsx("series.xlsx",sheet=2)
+g <- read_xlsx("series.xlsx",sheet=3)
+
+
+
+
+x <- ts(x, frequency = 12, start = c(1993,01))
+y <- ts(y[,2], frequency = 4, start = c(1993,01))
+x <- aggregate(x[,(2:4)]    , nfrequency = 4,mean)
+g <- ts(g, frequency = 1, start = c(2003))
+
+g <- g[,-1]
+
+g <- td(g ~ 1, to = "quarterly", method = "denton-cholette")
+
+g <- unlist(g[[1]])
+g <- (g/496198.8)*100
+
+xy <- ts.union(x, y)
+xyg <- ts.union(xy,g)
+
+
+decoxy <- decompose(xy, type="additive") 
+
+
+trendxy <- unlist(decoxy[[3]])
+colnames(trendxy) <- c("cons","inv","xn","pib")
+
+
+```
+
+
+```{r 3a1, echo=FALSE, fig.cap="México,1993Q1-2021Q4", fig.pos='H'}
+
+ts.plot(scale(xyg),gpars= list(col=c(1,2,3,4,5),ylab="Estandarizadas", xlab= "Trimestres"))
+legend("topleft", legend = c("Consumo","Inversión","XN","PIB", "G"), col = c(1,2,3,4,5), lty = 1)
+
+
+
+```
+
+El gasto público se obtuvo desde 2003 con frecuencia anual, por lo que fue necesario usar un método de desagregación temporal para transformar las series de baja frecuencia a alta frecuencia. El método que se usó fue el de Denton-Cholette(1994) donde suponemos un movimiento suavizado de la serie de alta frecuencia que converge a sus valores de baja frecuencia. 
+
+## b)
+*Grafíque dichas serie de tiempo juntas para comparalas visualmente.  (Compare la gráfica de las variables (de las que son siempre positivas) en dos versiones: a) su valor real original, y b) después de sacarles el logaritmo natural).*
+
+```{r 3b1,echo=FALSE ,fig.cap="Variables en índice base 2013Q3", fig.pos='H', fig.dim=  c(6, 4), warning=FALSE}
+
+xyg2 <- xyg
+
+xyg2 <- xyg2[,-3]
+
+ts.plot(xyg2,gpars= list(col=c(1,2,4,5),ylab="índice", xlab= "Trimestres"))
+legend("topleft", legend = c("Consumo","Inversión","PIB", "G"), col = c(1,2,4,5), lty = 1)
+
+
+
+```
+
+ 
+En la gráfica anterior podemos notar como son comparables visualmente, debido a que ya se presentan en índice base 2013. Pero si se tuvieran las variables en niveles, veríamos como la escala no permitiría que se apreciaran las fluctuaciones. Por lo que desde un inicio trabajamos con las series en la misma escala. 
+
+
+```{r 3b2,echo=FALSE ,fig.cap="Variables en Log base 2013Q3", fig.pos='H'}
+
+ts.plot(log(xyg2),gpars= list(col=c(1,2,4,5),ylab="Log", xlab= "Trimestres"))
+legend("topleft", legend = c("Consumo","Inversión","PIB", "G"), col = c(1,2,4,5), lty = 1,cex = .8,
+       horiz = TRUE)
+
+
+```
+
+
+Al pasar a logaritmo las series vemos como la dispersión de las series se potencia al inicio del periodo, y lo contrario ocurre al final. El cambio de escala nos permite trabajar con series visualmente comparables, para el caso donde no se tengan las variables en índice.  Para el caso de una regresión, tener las variables en logaritmo nos facilita la lectura de los parámetros, ya que estos son elasticidades. En otras palabras, los cambios en las variables exógenas sobre la endógena se harían en porcentaje de 1% a 1%.
+ 
+ 
+## c)
+*gráfique también la tasa de crecimiento de todas estas series.*
+
+ 
+```{r 3c,echo=FALSE ,fig.cap="Tasa de crecimiento", fig.pos='H'}
+
+xygtc <- ((xyg2/lag(xyg2,-1))-1)*100 
+
+
+xygtc <-  ts(xygtc, frequency = 4, start = c(1993,01))
+
+
+
+
+ts.plot(xygtc,gpars= list(col=c(1,2,4,5),ylab="Tasa de crecimiento", xlab= "Trimestres"))
+legend("bottomleft", legend = c("Consumo","Inversión","PIB", "G"), col = c(1,2,4,5), lty = 1,cex = .8,
+       horiz = TRUE)
+
+```
+
+
+Podemos observar como las tasas de crecimiento de todas las variables tienen un comportamiento estacionario, esto quiere decir que las fluctuaciones ocurren alrededor de una media. En este caso, la media de todas las variables es aproximadamente cero, pero con varianzas muy diferentes. Por ejemplo, la serie que presenta la mayor volatilidad es la inversión, seguida por la tasa de consumo y el PIB. La tasa de cambio del gasto público se mantiene estable para toda la muestra. Recordemos que la introducción al capítulo de inversión menciona que es importante estudiarla porque es el componente más volátil de las identidades macroeconómicas, y que es probable que esta variabilidad incida en el consumo. 
+
+## d)
+*Enfóquese ahora nada más al consumo y al producto agregado. Grafique la relación entre una serie y la otra, es decir, grafique los puntos ($\% \Delta Yt, \% \Delta Ct$) poniendo el consumo en las ordenadas.*
+
+
+En la siguiente gráfica se presenta un diagrama de dispersión del cambio porcentual trimestral del consumo y el ingreso. Podemos notar como la mayoría de los puntos se concentran cerca del $\Delta \% C = \Delta \% Y = 0$. Al incluir una regresión lineal podemos notar algo contrario a la teoría, que es una relación negativa entre consumo e ingreso. Esto significa que cuando el ingreso crece, el consumo decrece. Sin embargo, más adelante veremos que esta línea no es significativa, en otras palabras, es estadísticamente igual a cero. Entonces, no existe una relación significativa entre el cambio en el consumo y el ingreso entre 1993Q1 y 2021Q4. Esto va de acuerdo con la Hipótesis del Ingreso Permanente.
+
+```{r 3d,echo=FALSE ,fig.cap="Variables en logaritmo", fig.pos='H', warning=FALSE}
+
+xygtc <- as.data.frame(xygtc)
+
+names(xygtc) <- c("consumo", "inv","y","g")
+
+plot(xygtc[,3],xygtc[,1], ylab = "Consumo", xlab = "Ingreso")
+abline(lm(consumo ~ y, xygtc))
+
+
+```
+
+
+## e)
+*Calcule la volatilidad de las dos series de tasas de crecimiento. ¿Qué es más volatil, el ingreso o el consumo?*
+
+
+En este inciso calculamos la desviación estandar de la serie de ingreso y el consumo como indicador de la volatilidad.
+```{r 3e,echo=FALSE ,include=TRUE}
+
+#xygtc %>% summarise_if(is.numeric, sd)
+
+Desviacion <- c("Desviación")
+Consumo <- "4.24"
+Ingreso <- "2.37"
+
+
+tbl1 <- cbind(Desviacion, Consumo, Ingreso)
+tbl1 <- as.data.frame(tbl1)
+names(tbl1) <- c("","Consumo", "Ingreso")
+
+kbl(tbl1, booktabs = T,  caption = "Volatilidad") %>%
+kable_styling(position = "center",latex_options = c("striped", "hold_position"))
+
+```
+Podemos notar que $\sigma_{\Delta Y} < \sigma_{\Delta C}$, por lo que ocurre lo mismo para la varianza. Esto nos adelanta que la relación entre ingreso y consumo en diferencias será débil, ya que es probable que la variación del ingreso (al ser menor) no explique por completo la variación del consumo. En el siguiente inciso veremos que la bondad de ajuste del modelo en diferencias es cercana a cero.  
+
+## f)
+*Estime cuatro modelos lineales, donde las minúsculas reflejan el logaritmo de la variable en mayúscula, y reporte los valores estimados de los coeficientes, los estadísticos T, las R cuadradas, etc.*
+
+Estimamos cuatro modelos de los cuales, solo uno resultó ser significativos. En el siguiente cuadro se resumen los parámetros estimados, su nivel de significancia y su bondad de ajuste:
+```{r 3f,echo=FALSE ,include=TRUE, warning=FALSE}
+
+xyg <- as.data.frame(xyg)
+names(xyg) <- c("c","i", "xn","y","g")
+
+mod1 <- lm(c ~ y, data=xyg)
+#summary(mod1)
+
+mod2 <- lm(consumo ~ y, data=xygtc)
+#summary(mod2)
+
+xygtc <-ts(xygtc, frequency = 4, start = c(1993,01))
+
+mod3 <- dynlm(consumo ~ L(y,1), data=xygtc)
+#summary(mod3)
+
+mod4 <- lm(log(c) ~ log(y), data=xyg)
+#summary(mod4)
+
+
+
+Modelo <- c("Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4")
+Intercepto <- c("52.73***",  "1.34**","0.56","3.40***")
+Beta <- c("0.46***","-0.29*","0.07" ,"0.33***")
+Rsqr <- c("0.92","0.02","0.00","0.92")
+tbl <- cbind(Modelo, Intercepto, Beta, Rsqr)
+
+kbl(tbl, booktabs = T,  caption = "Regresiones") %>%
+kable_styling(position = "center",latex_options = c("striped", "hold_position")) %>%
+footnote(general = "(***) significativo al 99%, (**) al 95% y (*) al 90%. ",general_title = "Nota: ")
+         
+```
+Sabemos que el modelo uno estima la relación entre el consumo y ingreso en niveles. Esta estimación se realizó a través de Mínimos Cuadrados Ordinarios, por lo que es necesario comprobar la raíz unitaria de las variables, ya que MCO no es eficiente en presencia de series I(1). En el siguiente cuadro se presenta la prueba ADF, que nos indica la presencia de raíz unitaria en niveles por lo que los estimadores del modelo 1 y 2 están sesgados. 
+```{r 3adf,echo=FALSE ,include=TRUE, warning=FALSE}
+urootc<- adfTest(xyg[,1], lags = 1, type = c("nc", "c", "ct"), title = NULL,
+description = NULL)
+urooty <-adfTest(xyg[,4], lags = 1, type = c("nc", "c", "ct"), title = NULL,
+description = NULL)
+
+vari <- c("Consumo", "Ingreso")
+dful <- c("1.61",  "8.23")
+pval <- c("0.97","0.99")
+uroot <- cbind(vari,dful,pval)
+uroot <- as.data.frame(uroot)
+names(uroot) <- c("Variable", "Estadistico D-F", "P-value")
+kbl(uroot, booktabs = T,  caption = "Prueba de raíz unitaria") %>%
+kable_styling(position = "center",latex_options = c("striped", "hold_position"))
+         
+```
+
+Otra observación que es importante realizar, es que las variables en diferencias son estacionarias, pero no se encontró evidencia estadística que el estimador del ingreso fuera distinto de cero. Esto quiere decir que se descarta que el ingreso agregado tenga capacidad predictiva sobre el consumo, al menos para la muestra. En el siguiente inciso discutiremos más sobre porque puede ocurrir este hecho estilizado en México.
+
+
+## g)
+*Explique qué se podría concluir, si fuera el caso, a cerca de la Hipótesis del Ingreso Permanente para México a partir de los coeficientes encontrados*
+
+De acuerdo con los resultados de las regresiones anteriores, podemos ver como el consumo y el ingreso no guardan relación significativa en diferencias. Esto quiere decir que la tasa de cambio trimestral del ingreso no explica la tasa de cambio trimestral del consumo, incluso si agregamos un rezago ocurre lo mismo. Este ejercicio es similar al que realizó Hall para probar la Hipótesis del Ingreso Permanente. Sin embargo, vemos como en niveles sí existe una relación significativa entre el consumo y el ingreso, pero esta relación se estimo por medio de un método que es ineficiente en presencia de raíz unitaria, por lo que la evidencia del ejercicio no es concluyente. 
+
+Para poder hacer un análisis estadístico concluyente tendríamos que realizar un análisis de cointegración, ya que ambas series son I(1). Sin embargo, esto supera el propósito del trabajo por lo que concluiremos que para el caso de México la metodología de Hall también respaldaría que los agentes se comportan de acuerdo con la Hipótesis del Ingreso Permanente. 
+
+Al igual que como Campbell y Mankiw (1989) mencionaron, el trabajo de Hall prueba de manera muy limitada la existencia de la HIP, por lo que nuestros resultados también deberían interpretarse con la misma cautela que los de Hall. 
+
+
+
+
+
+ 
+ 
+ 
+
+
+
+# Ejercicio 4
+*Estudie el consumo de los individuos en México, siguiendo estos pasos:** 
+
+## a)
+**Baje los datos de un año de la ENIGH del sitio del INEGI y establezca el número de hogares y el ingreso y el gasto promedio.**
+
+De la página oficial del INEGI se descargó la base "concentrado_hogar" del año 2012. 
+Las variables más relevantes para este ejercicio son las siguientes:
+
+\begin{itemize}
+  \item Folioviv, Idenficador de la vivienda.
+  \item foliohog, número de hogares adicionales a la vivienda.
+  \item ubica\_geo, ubicación geográfica;esta compuesta por la clave de entidad federativa y clave del municipio-
+  \item clase\_hog, diferenciación de los tipos de hogares (por ejemplo, unipersonales = 1)
+  \item edad\_jefe, edad del jefe del hogar a la fecha de la entrevista.
+  \item ing\_cor, ingreso corriente.
+  \item gasto\_mon, gasto monetario-
+  \item factor\_hog, factor de expansión.
+\end{itemize}
+
+En seguida, se muestra el "header" de la base de datos (\ref{tab:head})-
+
+```{r head, warning=FALSE, message=FALSE}
+
+hog <- read_csv("C:/Users/rault/Downloads/ncv.csv")
+
+hog1 <- hog %>% select(folioviv, foliohog,ubica_geo, clase_hog, edad_jefe, ing_cor, gasto_mon, factor_hog) %>% 
+  rename( "Folio Vivienda" = folioviv,
+         "Folio Hogar"= foliohog, 
+         "Ubicación" = ubica_geo, 
+         " Edad Jefe" = edad_jefe , 
+         "Gasto" = gasto_mon,
+         "Ingreso" = ing_cor,
+         "Factor"= factor_hog)
+
+kable(head(hog1), booktabs = T, format = "latex", caption = "ENIGH 2012") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+
+```
+
+
+
+
+## b)
+*Estime una relación entre ingreso y gasto y reporte sus resultados.*
+
+Para estimar la relación gasto-ingreso asumimos un modelo lineal que sigue lo siguiente:
+
+\begin{equation}
+Gasto =\beta_{0} + \beta_{1}*Ing+U
+\end{equation}
+
+
+Donde $\beta_{0}$ se refiere a la intersección de la regresión, $\beta_{1}$ al coeficiente de la variable ingreso y $U$ es el error. Los resultados se muestran a continuación (\ref{tab:reg})
+
+```{r reg}
+
+
+lm(data = hog, gasto_mon ~ ing_cor, weights = factor_hog) %>% tidy() %>% 
+  kable(booktabs = T, format = "latex", caption = "Relación Gasto-Ingreso") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+                                                                
+
+```
+
+Podemos destacar un coeficiente positivo, es decir una relación directa entre el gasto y el ingreso. Además, según el moedelo, un aumento en un peso de ingreso, genera un aumento de 0.5 pesos.
+
+
+```{r graficagastoingreso, fig.cap="Diagrama de dispersión", fig.pos='H'}
+#hog %>% ggplot(aes(ing_cor, gasto_mon), weight) +
+#  geom_point() +
+ # geom_smooth(method='lm', weight= factor_hog) 
+
+
+hog %>% ggplot(aes(x = ing_cor, y= gasto_mon)) + geom_point()+geom_smooth(method = "lm")+ labs(title = "", x="Ingreso corriente",y='Gasto') +theme(panel.border = element_blank(), panel.grid.major=element_blank(), panel.grid.minor=element_blank(), axis.line= element_line(color = "grey"))+ theme_bw()
+
+```
+
+
+
+## c)
+*Estime una relación entre ingreso y gasto pero para hogares unipersonales de edad entre 30 y 40 años de edad de la Ciudad de México.*
+
+Para estimar la relación primero se realiza un filtrado de la base de datos con los criterios requeridos:
+
+\begin{itemize}
+  \item 30 < edad < 40
+  \item clase\_hog == 1 (clave para hogares unipersonales)
+  \item Código de entidad federativa 9. (Esto indica los hogares en CDMX)
+  \end{itemize}
+El resultado de dicho filtrado nos deja con 6 observaciones. Es importante mencionar que hay que considerar el factor de ajuste.
+
+
+```{r }
+hog$ubi <- substr(hog$ubica_geo,1,2) #Separamos el código de la entidad
+hog2 <- hog %>% dplyr::filter( edad_jefe >= 30 & edad_jefe <=40, clase_hog == 1, ubi == "09") %>% select( folioviv, gasto_mon, ing_cor, factor_hog)
+
+kable(hog2,booktabs = T, format = "latex", caption = "Relación Gasto-Ingreso para hogares unipersonales de edad entre 30 y 40 años de edad") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+```
+
+De nuevo asumimos un modelo lineal como en la ecuación 1-
+
+
+```{r }
+m1 <- lm( data= hog2, gasto_mon ~ ing_cor, weights = factor_hog)
+```
+
+
+```{r reg2}
+lm( data= hog2, gasto_mon ~ ing_cor, weights = factor_hog) %>% broom::tidy() %>% 
+kable( booktabs = T, format = "latex", caption = "Hogares unipersonales de entre 30 y 40 años de la Ciudad de México") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+
+```
+
+De nuevo podemos ver una relación directa entre ingreso y gasto. La relación es estadísticamente significativa y vemos que la intersección de la regresión es sustancialmente más baja, a pesar de lo anterior, el intercepto no es significativo. Esto se explica por el rango de edad que tomamos en cuenta.La población con las características requeridas, al incrementar su ingreso en un peso, aumenta su gasto en 90 centavos.
+
+```{r graff2, fig.cap="Regresión lineal", fig.pos='H'}
+
+
+ggplot(hog2,aes(x = ing_cor, y= gasto_mon)) + geom_point()+geom_smooth(method = "lm")+ labs(title = "", x="Ingreso corriente",y='Gasto') +theme(panel.border = element_blank(), panel.grid.major=element_blank(), panel.grid.minor=element_blank(), axis.line= element_line(color = "grey"))+theme_bw()
+
+```
+
+
+
+## d)
+
+*Para todos los hogares unipersonales, estime el valor promedio del ingreso por edad, separando la muestra en grupos de edad de cinco años cada uno y grafíquelo.*
+
+Para la realización de este ejercicio se utilizó la paquetería dplyr para segmentar los datos, así como la libería ggplot para graficar.
+El parámetro para determinar a los hogares unipersonales es la variable "clase_hog == 1". Los promedios por grupo de edad se muestran en la tabla \ref{tab:gedad}. Podemos destacar que los grupos con una peor expectativa de ingresos son aquellos de los extremos; personas muy jóvenes o muy grandes tienen un promedio de ingresos menor. Además el ingreso va aumentando hasta alcanzar un pico aproximadamente a los 50 años para después reducirse de forma paulatina.
+
+```{r, fig.cap="Promedio de ingreso por grupo de edad", fig.pos='H'}
+hog %>% dplyr::filter(clase_hog == 1) %>% 
+  mutate(edad = case_when(edad_jefe >= 12 & edad_jefe <=15  ~ '15',
+                          edad_jefe > 15 & edad_jefe <= 20 ~ '20',
+                          edad_jefe > 20 & edad_jefe <= 25 ~ '25',
+                           edad_jefe > 25 & edad_jefe <= 30 ~ '30',
+                           edad_jefe > 30 & edad_jefe <= 35 ~ '35',
+                           edad_jefe > 35 & edad_jefe <= 40 ~ '40',
+                           edad_jefe > 40 & edad_jefe <= 45 ~ '45',
+                           edad_jefe > 45 & edad_jefe <= 50 ~ '50',
+                           edad_jefe > 50 & edad_jefe <= 55 ~ '55',
+                           edad_jefe > 55 & edad_jefe <= 60 ~ '60',
+                           edad_jefe > 60 & edad_jefe <= 65 ~ '65',
+                           edad_jefe > 65 & edad_jefe <= 70 ~ '70',
+                           edad_jefe > 70 & edad_jefe <= 75 ~ '75',
+                           edad_jefe > 75 & edad_jefe <= 80 ~ '80',
+                           edad_jefe > 80 & edad_jefe <= 85 ~ '85',
+                           edad_jefe > 85 & edad_jefe <= 90 ~ '90',
+                           edad_jefe > 90 & edad_jefe <= 95 ~ '95',
+                           )) %>% 
+  group_by(edad) %>% 
+  summarise(promedio = weighted.mean(ing_cor, w=factor_hog)) %>% 
+  ggplot(aes(x=edad, y=promedio))+geom_bar(stat = "identity", fill = "#FF6666") + labs(title = "", x="edad",y='Promedio del ingreso') + theme(panel.border = element_blank(), panel.grid.major=element_blank(), panel.grid.minor=element_blank(), axis.line= element_line(color = "grey"))+theme_bw()
+
+```
+
+
+```{r gedad}
+hog %>% dplyr::filter(clase_hog == 1) %>% 
+  mutate(edad = case_when(edad_jefe >= 12 & edad_jefe <=15  ~ '12-15',
+                          edad_jefe > 15 & edad_jefe <= 20 ~ '15-20',
+                          edad_jefe > 20 & edad_jefe <= 25 ~ '20-25',
+                           edad_jefe > 25 & edad_jefe <= 30 ~ '25-30',
+                           edad_jefe > 30 & edad_jefe <= 35 ~ '30-35',
+                           edad_jefe > 35 & edad_jefe <= 40 ~ '35-40',
+                           edad_jefe > 40 & edad_jefe <= 45 ~ '40-45',
+                           edad_jefe > 45 & edad_jefe <= 50 ~ '45-50',
+                           edad_jefe > 50 & edad_jefe <= 55 ~ '50-55',
+                           edad_jefe > 55 & edad_jefe <= 60 ~ '55-60',
+                           edad_jefe > 60 & edad_jefe <= 65 ~ '60-65',
+                           edad_jefe > 65 & edad_jefe <= 70 ~ '65-70',
+                           edad_jefe > 70 & edad_jefe <= 75 ~ '70-75',
+                           edad_jefe > 75 & edad_jefe <= 80 ~ '75-80',
+                           edad_jefe > 80 & edad_jefe <= 85 ~ '80-85',
+                           edad_jefe > 85 & edad_jefe <= 90 ~ '85-90',
+                           edad_jefe > 90 & edad_jefe <= 95 ~ '90-95',
+                           edad_jefe > 95 & edad_jefe <= 100 ~ '95-100'
+                           )) %>% 
+  group_by(edad) %>% 
+  summarise(promedio = weighted.mean(ing_cor, w=factor_hog)) %>% 
+    kable(booktabs = T, format = "latex", caption = "Ingreso promedio por grupo de edad") %>% kable_styling(position = "center", latex_options = "HOLD_position")
+```
+
+
+## e) 
+*Interprete sus resultados a la luz de la HIP y comparados con los resultados para las variables agregadas.*
+
+De las dos regresiones realizadas (cuadro \ref{tab:reg} y \ref{tab:reg2}) vemos una relación significativa entre el ingreso y el gasto, es decir, se pone en entre dicho la hipótisis de la caminata aleatoria. Además, podemos observar una relación más cercana entre ingreso y gasto para la población entre 30 y 40 años en hogares unipersonales. Los anterior es consistente con lo visto en clase, pues, esta población tiene más certidumbre sobre su futuro; probablemente estudios terminados o una situación laboral estable, por lo que un aumento en su ingreso es más probable que sea de carácter permanente y ante menor incertidumbre el ahorro precautorio es menor.
+
+
+
+# Ejercicio 5
+**Estudie el "acertijo del premio al riesgo" para el caso de México siguiendo estos pasos:**
+
+## a)
+*Consiga los valores anuales de IPC, el Índice de Precios y Cotizaciones de la Bolsa Mexicana de Valores por lo menos desde 1990.*
+```{r, echo=FALSE}
+library(readxl)
+base_5 = read_excel('C:/Users/rault/Downloads/5r.xlsx')
+```
+
+```{r u, echo=FALSE}
+knitr::kable(
+  base_5, booktabs = TRUE, format = 'latex', digits=3,
+  caption = "IPC, CETES a distintos plazos y la diferencia en rendimientos"
+)%>%
+  kable_styling(latex_options="scale_down", position="center", font_size=8)
+```
+
+Datos obtenidos de Banco de México. Véase Cuadro \ref{tab:u}.
+
+## b)
+*Calcule su tasa de retorno nominal para cada año.*
+
+Elaboración propia con base en datos de Banco de México. Véase Cuadro \ref{tab:u}.
+
+## c)
+*Consiga los valores promedio anual de la tasa de interés de CETES a 7 días, o la TIIE, la tasa inter-bancaria de equilibrio, y de la tasa de interés a un año, para el periodo que esté disponible.*
+
+Datos obtenidos de Banco de México. Véase Cuadro \ref{tab:u}.
+
+## d)
+*Calcule la diferencia entre el retorno del IPC y el retorno de invertir en CETES a distintos plazos.*
+
+
+Sea: 
+
+ipc_bmv = Índice de Precios y Cotizaciones de la Bolsa Mexicana de Valores
+
+rend_nom_ipc_bmv = Rendimiento del IPC
+
+cetes_28d = Tasa de interés CETES a 28 días
+
+cetes_91d = Tasa de interés CETES a 91 días
+
+cetes_182d = Tasa de interés CETES a 182 días
+
+cetes_364d = Tasa de interés CETES a 364 días
+
+ipc_28 = Diferencia en el rendimiento entre el IPC y la tasa de interés CETES a 28 días
+
+ipc_91 = Diferencia en el rendimiento entre el IPC y la tasa de interés CETES a 91 días
+
+ipc_182 = Diferencia en el rendimiento entre el IPC y la tasa de interés CETES a 182 días
+
+ipc_364 = Diferencia en el rendimiento entre el IPC y la tasa de interés CETES a 364 días
+
+gc_nac = Tasa de crecimiento real del consumo agregado de bienes nacionales
+
+gc_imp = Tasa de crecimiento real del consumo agregado de bienes agregados
+
+### e) Calcule la covarianza entre dicha diferencias y la tasa de crecimiento real del consumo agregado de la economía mexicana.
+
+Tomamos el Índice de Consumo Privado en el Mercado Interior (IMCPMI) y dentro del índice, consideramos el componente Nacional (fuente: INEGI). Véase los resultados en el Cuadro \ref{tab:op}.
+
+### f) Calcule el valor de aversión relativa al riesgo que implican estos números, dado el supuesto de una utilidad con forma ARRC.
+
+Acorde al acertijo del premio al riesgo y usando una función de utilidad ARRC, el grado de aversión al riesgo está dado por:
+
+\begin{equation}
+\theta=\frac{E[r^{i}]-E[r^{j}]}{cov(r^{i}-r^{j},g^{c})}
+\end{equation}
+
+Donde $E[r^{i}]-E[r^{j}]$ es la diferencia de los valores esperados del rendimiento de los activos y $g^{c}$ representa la tasa de crecimiento en el consumo.
+
+```{r, echo=FALSE}
+df <- data.frame(CETES = c("28 días", "91 días", "182 días", "364 días"), Equity_Premium = c(0.0326, 0.0288, 0.0305, 0.0299), Covarianza = c(0.002099, 0.002031, 0.001971, 0.001869), Coeficiente_ARRC = c(15.54, 14.15, 15.50, 15.97))
+```
+
+
+```{r op, echo=FALSE}
+knitr::kable(
+  df, booktabs = TRUE, format = 'latex',
+  caption = "Cálculo del coeficiente ARRC - Consumo Nacional"
+)%>%
+  kable_styling(latex_options = "HOLD_position", position="center", font_size=8)
+```
+
+
+## g)
+*Ahora calcule la covarianza entre dichas diferencias y la tasa de crecimiento real del consumo agregado de bienes importados de la economía mexicana.*
+
+Tomamos el Índice de Consumo Privado en el Mercado Interior (IMCPMI) y dentro del índice, consideramos el componente Importado. Véase los resultados en el Cuadro \ref{tab:ol}.
+
+## h)
+*Calcule el valor de aversión relativa al riesgo que implican estos números, dado el supuesto de una utilidad con forma ARRC.*
+
+```{r, echo=FALSE}
+df1 <- data.frame(CETES = c("28 días", "91 días", "182 días", "364 días"), Equity_Premium = c(0.0326, 0.0288, 0.0305, 0.0299), Covarianza = c(0.024898, 0.024410, 0.022349, 0.021348), Coeficiente_ARRC = c(1.31, 1.18, 1.37, 1.40))
+```
+
+
+```{r ol, echo=FALSE}
+knitr::kable(
+  df1, booktabs = TRUE, format = 'latex',
+  caption = "Cálculo del coeficiente ARRC - Consumo Importado"
+)%>%
+  kable_styling(latex_options = "HOLD_position", position="center", font_size=8)
+```
+
+### i) Interprete sus resultados.
+
+Los resultados obtenidos del cálculo del grado de aversión al riesgo, con la base de datos de diferenciales de rendimiento de activos con el consumo agregado de bienes nacionales, están en linea con la evidencia empírica, donde dicho parámetro alcanza valores elevados, superiores al nivel de 15. Considerando el conjunto de datos del consumo importado, el coeficiente ARRC es menor que en el caso del consumo de bienes nacionales, oscilando alrededor del 1.2 y 1.4. También se puede observar que este coeficiente tiene una tendencia ascendente, siendo mayor cuando se toma en cuenta un mayor plazo de CETES.
+
+# Ejercicio 6
+*Utilice el método del árbol binomial para, primero, explicar el precio P=80 de un activo y, después, valuar un ``call'' sobre dicho activo, con precio de ejercicio K=P-N donde N es el número de su equipo, (Grupo 1, use N=1, Grupo 2, use N=2, etc) asumiendo una tasa de interés de 5 por ciento:*
+
+Para el desarrollo de este ejercicio se utilizó la librería "derivmkts" y en concreto, el comando "binomopt". Dicho comando sigue el proceso de valuación de opciones que especifíca Hull(). Debido a lo anterior, en seguida se describe el procedimiento.
+
+Los árboles binomiales son un diagrama que representa los diferentes caminos que puede tomar el precio de un activo durante el periodo de vida de una opción. Este método se basa en el supuesto de que el precio de la acción sigue una caminata aleatoria. 
+
+Imaginemos un portafolio que consta de posiciones largas en $\Delta$ acciones, así como una posición corta en una opción. Denotemos con $f$ el precio del activo. Calculamos entonces el valor de $\Delta$ que hace que el portafolio no tenga riesgo. En el caso de un aumento del precio de la acción, el valor del portafolio al final de la vida de la opción es $S_{0}u \Delta - f_{u}$. En caso de un movimiento en dirección contraria el precio sería $S_{0}d \Delta - f_{d}$.
+Ambas son iguales cuando:
+
+\begin{equation*}
+S_{0}u \Delta - f_{u} = S_{0}d \Delta - f_{d}
+\end{equation*}
+
+Despejando $\Delta$ obtenemos lo siguiente:
+
+\begin{equation*}
+\Delta = \frac{f_{u}-f_{d}}{S_{0}u-S_{0}d}
+\end{equation*}
+En este caso el portafolio está libre de riesgo y por tanto no hay oportunidades de arbitraje. 
+Al denotar la tasa libre de riesgo como $r$, el valor presente del portafolio es
+
+\begin{equation*}
+(S_{0}u \Delta-f_{u})e^{-rT}
+\end{equation*}
+mientras que el costo de establecer el portafolio es 
+
+\begin{equation*}
+S_{0} \Delta - f
+\end{equation*}
+De donde obtenemos lo siguiente:
+
+\begin{equation*}
+(S_{0}u \Delta-f_{u})e^{-rT}=S_{0} \Delta - f
+\end{equation*}
+despejando $f$ y sustituyendo el valor de $\Delta$ obtenemos
+
+\begin{equation*}
+f= \frac{f_{d}(1-de^{-rT})+f_{d}(ue^{-rT-1})}{u-d}
+\end{equation*}
+Es decir, que el valor de una opción es:
+
+\begin{equation*}
+f = e^{-rT}(pf_{u}+(1-p)f_{d})
+\end{equation*}
+donde
+
+\begin{equation*}
+p = \frac{e^{rT}-d}{u-d}
+\end{equation*}
+
+Para ajustar la volatilidad se especifican los movimientos hacia arriba y hacia abajo de los activos subyacentes de la siguiente forma:
+
+\begin{equation*}
+u = e^{v\sqrt{tt}}
+\end{equation*}
+
+\begin{equation*}
+d = e^{-v\sqrt{tt}}
+\end{equation*}
+Por último se utiliza la paquetería "derivmkts" para valuar el precio de la acción con los siguientes parámetros:
+
+\begin{itemize}
+  \item Precio de la acción $S_{0} = 80$
+  \item Precio de ejercicio $k=75$ (equipo 5)
+  \item Tasa de interés anual libre de reisgo $r=0.05$
+  \item Tiempo de madurez en años $tt=1$
+  \item Rendimiento de dividendos $d=0$
+  \item número de pasos binomiales $nstep = 1$
+  \item volatilidad 0.20
+\end{itemize}
+
+En seguida se muestran los resultados:
+```{r, message=TRUE}
+binomopt(s= 80, k=75, tt=1, r= 0.05, v= 0.20, d=0, nstep = 1, returnparams = TRUE)
+```
+
+
+```{r, fig.cap="Árbol binomial en un paso", fig.pos='H'}
+bin <- binomplot(s= 80, k=75, tt=1, r= 0.05, v= 0.20, d=0, nstep = 1, plotarrows = T, plotvalues = T)
+
+
+```
+
+Si cambiáramos a 5 pasos binomiales entonces el precio del activo es:
+
+```{r, message=TRUE}
+binomopt(s= 80, k=75, tt=1, r= 0.05, v= 0.20, d=0, nstep = 5, returnparams = TRUE)
+```
+
+
+
+```{r, fig.cap="Árbol binomial en cinco pasos", fig.pos='H'}
+
+bin <- binomplot(s= 80, k=75, tt=1, r= 0.05, v= 0.20, d=0, nstep = 5, plotarrows = T, plotvalues = T)
+```
+
+
